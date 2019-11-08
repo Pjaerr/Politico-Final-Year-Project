@@ -453,7 +453,11 @@ class App extends React.Component<Props, State> {
     Systems.DataStorage.set<IGameState>("GameState", this.state.gameState);
 
     this.setState(prevState => {
-      return { gameState: { turn: prevState.gameState.turn + 1 } } as State;
+      return {
+        gameState: {
+          turn: prevState.gameState.turn + 1
+        }
+      };
     });
   };
 
