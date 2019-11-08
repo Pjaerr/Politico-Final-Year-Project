@@ -11,9 +11,16 @@ import Systems from "../../systems/Systems";
 
 //Interfaces
 import IGameState from "../../interfaces/IGameState";
+import IAttributes from "../../interfaces/IAttributes";
+
+//Data
+import DefaultGameState from "../../data/DefaultGameState";
+import StartScreen from "../StartScreen/StartScreen";
 
 type State = {
   gameState: IGameState;
+  hasExistingSave: boolean;
+  gameStarted: boolean;
 };
 
 type Props = {};
@@ -22,433 +29,48 @@ class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const gameState = Systems.DataStorage.get<IGameState>("gameState");
+    const gameState = Systems.DataStorage.get<IGameState>("GameState");
 
     if (gameState) {
-      //If we already have a game save, restore it.
       this.state = {
-        gameState
+        gameState,
+        hasExistingSave: true,
+        gameStarted: false
       };
     } else {
-      //If we don't have a game save, create a new game.
-      // ! This will eventually be extracted out of here.
       this.state = {
-        gameState: {
-          turn: 0,
-          attributes: {
-            financial: 100,
-            populationHappiness: 100,
-            domesticPoliticalFavour: 100,
-            foreignPoliticalFavour: 100
-          },
-          provinces: {
-            bedfordshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            berkshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            buckinghamshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            cheshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            cambridgeshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            cornwall: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            cumbria: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            derbyshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            durham: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            dorset: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            devon: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            essex: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            gloucestershire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            greater_london: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            hampshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            herefordshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            hertfordshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            kent: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            lancashire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            leicestershire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            lincolnshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            northamptonshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            northumberland: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            norfolk: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            northern_ireland: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            nottinghamshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            oxfordshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            rutland: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            scotland: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            suffolk: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            somerset: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            shropshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            surrey: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            staffordshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            sussex: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            wales: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            wiltshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            worcestershire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            warwickshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            },
-            yorkshire: {
-              population: 31670000,
-              happiness: 100,
-              factors: {
-                numberOfUniversities: 5,
-                averageIncome: 37000,
-                ageRange: { min: 28, max: 35 },
-                foreignPopulation: 5
-              }
-            }
-          }
-        }
+        gameState: DefaultGameState,
+        hasExistingSave: false,
+        gameStarted: false
       };
     }
   }
 
-  nextTurn = () => {
+  startNewGame = () => {
+    if (this.state.hasExistingSave) {
+      this.setState({
+        gameState: DefaultGameState,
+        gameStarted: true
+      });
+    } else {
+      this.setState({ gameStarted: true });
+    }
+  };
+
+  continueGame = () => {
+    this.setState({
+      gameStarted: true
+    });
+  };
+
+  nextTurn = (
+    attributeAdjustments: IAttributes = {
+      financial: 0,
+      populationHappiness: 0,
+      domesticPoliticalFavour: 0,
+      foreignPoliticalFavour: 0
+    }
+  ) => {
     //Save the game state to storage before we move to the next turn
     Systems.DataStorage.set<IGameState>("GameState", this.state.gameState);
 
@@ -456,6 +78,20 @@ class App extends React.Component<Props, State> {
       return {
         gameState: {
           ...prevState.gameState,
+          attributes: {
+            financial:
+              prevState.gameState.attributes.financial +
+              attributeAdjustments.financial,
+            populationHappiness:
+              prevState.gameState.attributes.populationHappiness +
+              attributeAdjustments.populationHappiness,
+            domesticPoliticalFavour:
+              prevState.gameState.attributes.domesticPoliticalFavour +
+              attributeAdjustments.domesticPoliticalFavour,
+            foreignPoliticalFavour:
+              prevState.gameState.attributes.foreignPoliticalFavour +
+              attributeAdjustments.foreignPoliticalFavour
+          },
           turn: prevState.gameState.turn + 1
         }
       };
@@ -464,10 +100,26 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className={styles.container}>
-        <TurnCounter currentTurn={this.state.gameState.turn} />
-        <button onClick={this.nextTurn}>Increment Turn</button>
-      </div>
+      <>
+        {this.state.gameStarted ? (
+          <div className={styles.container}>
+            <TurnCounter currentTurn={this.state.gameState.turn} />
+            <button
+              onClick={() => {
+                this.nextTurn();
+              }}
+            >
+              Increment Turn
+            </button>
+          </div>
+        ) : (
+          <StartScreen
+            showContinueButton={this.state.hasExistingSave}
+            continueFunc={this.continueGame}
+            startFunc={this.startNewGame}
+          />
+        )}
+      </>
     );
   }
 }
