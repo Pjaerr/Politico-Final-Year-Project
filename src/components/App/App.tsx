@@ -455,6 +455,7 @@ class App extends React.Component<Props, State> {
     this.setState(prevState => {
       return {
         gameState: {
+          ...prevState.gameState,
           turn: prevState.gameState.turn + 1
         }
       };
