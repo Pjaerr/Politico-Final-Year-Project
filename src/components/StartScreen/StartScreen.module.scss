@@ -1,0 +1,63 @@
+@import "../variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $white;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.title {
+  font-size: $headingFontSizeSmall;
+
+  @media (min-width: $brk-medium) {
+    font-size: $headingFontSizeMedium;
+  }
+
+  margin: 40px;
+  color: $blue;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  height: 120px;
+  justify-content: space-between;
+  margin-top: 60px;
+
+  @media (min-width: $brk-medium) {
+    height: 160px;
+  }
+}
+
+@mixin button($textColour, $backgroundColour) {
+  color: $textColour;
+  background-color: $backgroundColour;
+  border: 0;
+  height: 35px;
+  width: 200px;
+  border-radius: 7px;
+  transition: box-shadow 0.3s;
+  font-weight: bold;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 2.5px 5px 0px,
+      rgba(0, 0, 0, 0.23) -2px 1px 6px 0px;
+  }
+
+  @media (min-width: $brk-medium) {
+    width: 335px;
+    height: 45px;
+  }
+}
+
+.startButton {
+  @include button(#fff, rgba(46, 204, 113, 0.8));
+}
+
+.continueButton {
+  @include button(#fff, rgba(240, 147, 43, 0.8));
+}

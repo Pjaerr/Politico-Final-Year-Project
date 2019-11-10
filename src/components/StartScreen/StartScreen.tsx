@@ -14,27 +14,22 @@ const StartScreen = ({
   startFunc
 }: Props) => {
   return (
-    <div className={styles.container}>
-      <h1>Politico</h1>
-      {showContinueButton && (
-        <button
-          className={styles.continueButton}
-          onClick={() => {
-            continueFunc();
-          }}
-        >
-          Continue
+    <main className={styles.container}>
+      <h1 className={styles.title}>Politico</h1>
+      <div className={styles.buttons}>
+        {showContinueButton && (
+          <button
+            className={styles.continueButton}
+            onClick={() => continueFunc()}
+          >
+            Continue
+          </button>
+        )}
+        <button className={styles.startButton} onClick={() => startFunc()}>
+          New Game
         </button>
-      )}
-      <button
-        className={styles.startButton}
-        onClick={() => {
-          startFunc();
-        }}
-      >
-        Start
-      </button>
-    </div>
+      </div>
+    </main>
   );
 };
 

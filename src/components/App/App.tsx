@@ -71,29 +71,31 @@ class App extends React.Component<Props, State> {
       foreignPoliticalFavour: 0
     }
   ) => {
-    //Save the game state to storage before we move to the next turn
-    Systems.DataStorage.set<IGameState>("GameState", this.state.gameState);
-
     this.setState(prevState => {
+      const newGameState = {
+        ...prevState.gameState,
+        attributes: {
+          financial:
+            prevState.gameState.attributes.financial +
+            attributeAdjustments.financial,
+          populationHappiness:
+            prevState.gameState.attributes.populationHappiness +
+            attributeAdjustments.populationHappiness,
+          domesticPoliticalFavour:
+            prevState.gameState.attributes.domesticPoliticalFavour +
+            attributeAdjustments.domesticPoliticalFavour,
+          foreignPoliticalFavour:
+            prevState.gameState.attributes.foreignPoliticalFavour +
+            attributeAdjustments.foreignPoliticalFavour
+        },
+        turn: prevState.gameState.turn + 1
+      };
+
+      //Save the game state to storage before we move to the next turn
+      Systems.DataStorage.set<IGameState>("GameState", newGameState);
+
       return {
-        gameState: {
-          ...prevState.gameState,
-          attributes: {
-            financial:
-              prevState.gameState.attributes.financial +
-              attributeAdjustments.financial,
-            populationHappiness:
-              prevState.gameState.attributes.populationHappiness +
-              attributeAdjustments.populationHappiness,
-            domesticPoliticalFavour:
-              prevState.gameState.attributes.domesticPoliticalFavour +
-              attributeAdjustments.domesticPoliticalFavour,
-            foreignPoliticalFavour:
-              prevState.gameState.attributes.foreignPoliticalFavour +
-              attributeAdjustments.foreignPoliticalFavour
-          },
-          turn: prevState.gameState.turn + 1
-        }
+        gameState: newGameState
       };
     });
   };

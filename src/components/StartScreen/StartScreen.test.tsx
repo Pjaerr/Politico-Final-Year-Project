@@ -14,7 +14,7 @@ describe("Creating a <StartScreen/> component and passing it a showContinueButto
     );
 
     expect(wrapper.html()).toEqual(
-      '<div class="container"><h1>Politico</h1><button class="startButton">Start</button></div>'
+      '<main class="container"><h1 class="title">Politico</h1><div class="buttons"><button class="startButton">New Game</button></div></main>'
     );
     wrapper.unmount();
   });
@@ -31,7 +31,7 @@ describe("Creating a <StartScreen/> component and passing it a showContinueButto
     );
 
     expect(wrapper.html()).toEqual(
-      '<div class="container"><h1>Politico</h1><button class="continueButton">Continue</button><button class="startButton">Start</button></div>'
+      '<main class="container"><h1 class="title">Politico</h1><div class="buttons"><button class="continueButton">Continue</button><button class="startButton">New Game</button></div></main>'
     );
     wrapper.unmount();
   });
