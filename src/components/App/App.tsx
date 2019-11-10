@@ -16,11 +16,14 @@ import IAttributes from "../../interfaces/IAttributes";
 //Data
 import DefaultGameState from "../../data/DefaultGameState";
 import StartScreen from "../StartScreen/StartScreen";
+import EndScreen from "../EndScreen/EndScreen";
 
 type State = {
   gameState: IGameState;
   hasExistingSave: boolean;
   gameStarted: boolean;
+  gameIsOver: boolean;
+  playerHasWon: boolean;
 };
 
 type Props = {};
@@ -35,13 +38,17 @@ class App extends React.Component<Props, State> {
       this.state = {
         gameState,
         hasExistingSave: true,
-        gameStarted: false
+        gameStarted: false,
+        gameIsOver: true,
+        playerHasWon: true
       };
     } else {
       this.state = {
         gameState: DefaultGameState,
         hasExistingSave: false,
-        gameStarted: false
+        gameStarted: false,
+        gameIsOver: false,
+        playerHasWon: false
       };
     }
   }
@@ -101,28 +108,52 @@ class App extends React.Component<Props, State> {
   };
 
   render() {
-    return (
-      <>
-        {this.state.gameStarted ? (
-          <div className={styles.container}>
-            <TurnCounter currentTurn={this.state.gameState.turn} />
-            <button
-              onClick={() => {
-                this.nextTurn();
-              }}
-            >
-              Increment Turn
-            </button>
-          </div>
-        ) : (
-          <StartScreen
-            showContinueButton={this.state.hasExistingSave}
-            continueFunc={this.continueGame}
-            startFunc={this.startNewGame}
+    if (!this.state.gameIsOver) {
+      return (
+        <>
+          {this.state.gameStarted ? (
+            <div className={styles.container}>
+              <TurnCounter currentTurn={this.state.gameState.turn} />
+              <button
+                onClick={() => {
+                  this.nextTurn();
+                }}
+              >
+                Increment Turn
+              </button>
+            </div>
+          ) : (
+            <StartScreen
+              showContinueButton={this.state.hasExistingSave}
+              continueFunc={this.continueGame}
+              startFunc={this.startNewGame}
+            />
+          )}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <EndScreen
+            exitFunc={() => {
+              this.setState({
+                gameState: DefaultGameState,
+                hasExistingSave: false,
+                gameStarted: false,
+                gameIsOver: false,
+                playerHasWon: false
+              });
+            }}
+            playerHasWon={this.state.playerHasWon}
+            statistics={{
+              numberOfDecisions: 18,
+              highestRatedAttribute: "Financial",
+              lowestRatedAttribute: "Population Happiness"
+            }}
           />
-        )}
-      </>
-    );
+        </>
+      );
+    }
   }
 }
 
