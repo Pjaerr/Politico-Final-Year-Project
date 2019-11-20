@@ -3,57 +3,55 @@ import { mount } from "enzyme";
 
 import StartScreen from "./StartScreen";
 
-describe("Creating a <StartScreen/> component and passing it a showContinueButton prop of false", () => {
-  it("should render a container with a child containing only a start button", () => {
-    const wrapper = mount(
-      <StartScreen
-        showContinueButton={false}
-        startFunc={() => {}}
-        continueFunc={() => {}}
-      />
-    );
-
-    expect(wrapper.html()).toEqual(
-      '<div class="container"><h1>Politico</h1><button class="startButton">Start</button></div>'
-    );
-    wrapper.unmount();
-  });
-});
-
 describe("Creating a <StartScreen/> component and passing it a showContinueButton prop of true", () => {
-  it("should render a container with a child containing both a start and a continue button", () => {
+  it("should render a container with two <button> elements", () => {
     const wrapper = mount(
       <StartScreen
         showContinueButton={true}
-        startFunc={() => {}}
         continueFunc={() => {}}
+        startFunc={() => {}}
       />
     );
 
-    expect(wrapper.html()).toEqual(
-      '<div class="container"><h1>Politico</h1><button class="continueButton">Continue</button><button class="startButton">Start</button></div>'
-    );
+    expect(wrapper.find("button").length).toEqual(2);
+
     wrapper.unmount();
   });
 });
 
-describe("Creating a <StartScreen/> component and passing it a startFunc that increments a variable", () => {
-  it("should, when the start button is clicked, increment the variable we passed in", () => {
-    let variable = 0;
+describe("Creating a <StartScreen/> component and passing it a showContinueButton prop of false", () => {
+  it("should render a container with a single <button> element", () => {
+    const wrapper = mount(
+      <StartScreen
+        showContinueButton={false}
+        continueFunc={() => {}}
+        startFunc={() => {}}
+      />
+    );
+
+    expect(wrapper.find("button").length).toEqual(1);
+
+    wrapper.unmount();
+  });
+});
+
+describe("Creating a <StartScreen/> component, passing it a startFunc function", () => {
+  it("should call the startFunc function when the start button is clicked", () => {
+    let value = 5;
 
     const wrapper = mount(
       <StartScreen
         showContinueButton={false}
-        startFunc={() => {
-          variable++;
-        }}
         continueFunc={() => {}}
+        startFunc={() => {
+          value += 10;
+        }}
       />
     );
 
-    wrapper.find(".startButton").simulate("click");
+    wrapper.find("button").simulate("click");
 
-    expect(variable).toEqual(1);
+    expect(value).toEqual(15);
 
     wrapper.unmount();
   });

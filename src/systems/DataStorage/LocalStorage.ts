@@ -10,7 +10,7 @@ class LocalStorage implements IDataStorage {
       return localStorageItemAsJson as T;
     }
     else {
-      console.error("LocalStorage cannot find item with key: " + key);
+      console.warn("LocalStorage cannot find item with key: " + key);
     }
 
     return null;

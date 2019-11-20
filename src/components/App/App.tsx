@@ -16,11 +16,18 @@ import IAttributes from "../../interfaces/IAttributes";
 //Data
 import DefaultGameState from "../../data/DefaultGameState";
 import StartScreen from "../StartScreen/StartScreen";
+import EndScreen from "../EndScreen/EndScreen";
+
+//Utils
+import * as utils from "../../utils/utils";
 
 type State = {
   gameState: IGameState;
+  maxTurns: number;
   hasExistingSave: boolean;
   gameStarted: boolean;
+  gameIsOver: boolean;
+  playerHasWon: boolean;
 };
 
 type Props = {};
@@ -31,17 +38,23 @@ class App extends React.Component<Props, State> {
 
     const gameState = Systems.DataStorage.get<IGameState>("GameState");
 
+    const defaultState = {
+      maxTurns: 10,
+      hasExistingSave: gameState ? true : false,
+      gameStarted: false,
+      gameIsOver: true,
+      playerHasWon: false
+    };
+
     if (gameState) {
       this.state = {
-        gameState,
-        hasExistingSave: true,
-        gameStarted: false
+        gameState: gameState,
+        ...defaultState
       };
     } else {
       this.state = {
         gameState: DefaultGameState,
-        hasExistingSave: false,
-        gameStarted: false
+        ...defaultState
       };
     }
   }
@@ -71,56 +84,98 @@ class App extends React.Component<Props, State> {
       foreignPoliticalFavour: 0
     }
   ) => {
-    //Save the game state to storage before we move to the next turn
-    Systems.DataStorage.set<IGameState>("GameState", this.state.gameState);
-
     this.setState(prevState => {
+      const newGameState = {
+        ...prevState.gameState,
+        attributes: {
+          financial:
+            prevState.gameState.attributes.financial +
+            attributeAdjustments.financial,
+          populationHappiness:
+            prevState.gameState.attributes.populationHappiness +
+            attributeAdjustments.populationHappiness,
+          domesticPoliticalFavour:
+            prevState.gameState.attributes.domesticPoliticalFavour +
+            attributeAdjustments.domesticPoliticalFavour,
+          foreignPoliticalFavour:
+            prevState.gameState.attributes.foreignPoliticalFavour +
+            attributeAdjustments.foreignPoliticalFavour
+        },
+        turn: prevState.gameState.turn + 1
+      };
+
+      //Save the game state to storage before we move to the next turn
+      Systems.DataStorage.set<IGameState>("GameState", newGameState);
+
       return {
-        gameState: {
-          ...prevState.gameState,
-          attributes: {
-            financial:
-              prevState.gameState.attributes.financial +
-              attributeAdjustments.financial,
-            populationHappiness:
-              prevState.gameState.attributes.populationHappiness +
-              attributeAdjustments.populationHappiness,
-            domesticPoliticalFavour:
-              prevState.gameState.attributes.domesticPoliticalFavour +
-              attributeAdjustments.domesticPoliticalFavour,
-            foreignPoliticalFavour:
-              prevState.gameState.attributes.foreignPoliticalFavour +
-              attributeAdjustments.foreignPoliticalFavour
-          },
-          turn: prevState.gameState.turn + 1
-        }
+        gameState: newGameState
       };
     });
   };
 
+  componentDidUpdate() {
+    //Avoid infinite state updates if the game is over
+    if (this.state.gameIsOver) return;
+
+    if (this.state.gameState.turn > this.state.maxTurns) {
+      this.setState({
+        gameIsOver: true,
+        playerHasWon: true
+      });
+    } else if (utils.attributesAreBelowZero(this.state.gameState.attributes)) {
+      this.setState({
+        gameIsOver: true,
+        playerHasWon: false
+      });
+    }
+  }
+
   render() {
-    return (
-      <>
-        {this.state.gameStarted ? (
-          <div className={styles.container}>
-            <TurnCounter currentTurn={this.state.gameState.turn} />
-            <button
-              onClick={() => {
-                this.nextTurn();
-              }}
-            >
-              Increment Turn
-            </button>
-          </div>
-        ) : (
-          <StartScreen
-            showContinueButton={this.state.hasExistingSave}
-            continueFunc={this.continueGame}
-            startFunc={this.startNewGame}
+    if (!this.state.gameIsOver) {
+      return (
+        <>
+          {this.state.gameStarted ? (
+            <div className={styles.container}>
+              <TurnCounter currentTurn={this.state.gameState.turn} />
+              <button
+                onClick={() => {
+                  this.nextTurn();
+                }}
+              >
+                Increment Turn
+              </button>
+            </div>
+          ) : (
+            <StartScreen
+              showContinueButton={this.state.hasExistingSave}
+              continueFunc={this.continueGame}
+              startFunc={this.startNewGame}
+            />
+          )}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <EndScreen
+            exitFunc={() => {
+              this.setState({
+                gameState: DefaultGameState,
+                hasExistingSave: false,
+                gameStarted: false,
+                gameIsOver: false,
+                playerHasWon: false
+              });
+            }}
+            playerHasWon={this.state.playerHasWon}
+            statistics={{
+              numberOfDecisions: this.state.gameState.turn,
+              attributes: this.state.gameState.attributes
+            }}
           />
-        )}
-      </>
-    );
+        </>
+      );
+    }
   }
 }
 

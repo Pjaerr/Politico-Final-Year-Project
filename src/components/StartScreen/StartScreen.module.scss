@@ -1,0 +1,43 @@
+@import "../variables";
+@import "../mixins";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $white;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.title {
+  font-size: $headingFontSizeSmall;
+
+  @media (min-width: $brk-medium) {
+    font-size: $headingFontSizeMedium;
+  }
+
+  margin: 40px;
+  color: $blue;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  height: 120px;
+  justify-content: space-between;
+  margin-top: 60px;
+
+  @media (min-width: $brk-medium) {
+    height: 160px;
+  }
+}
+
+.startButton {
+  @include button(#fff, rgba(46, 204, 113, 0.8));
+}
+
+.continueButton {
+  @include button(#fff, rgba(240, 147, 43, 0.8));
+}
