@@ -1,13 +1,13 @@
 import React from "react";
 
 import styles from "./EndScreen.module.scss";
+import IAttributes from "../../interfaces/IAttributes";
 
 type Props = {
   playerHasWon: boolean;
   statistics: {
     numberOfDecisions: number;
-    highestRatedAttribute: string;
-    lowestRatedAttribute: string;
+    attributes: IAttributes;
   };
   exitFunc: Function;
 };
@@ -23,25 +23,32 @@ const EndScreen = ({ playerHasWon, statistics, exitFunc }: Props) => {
             as Prime Minister
           </>
         ) : (
-          <>
-            You failed to keep your <b>{statistics.lowestRatedAttribute}</b>{" "}
-            above 0
-          </>
+          <>You failed to keep your nations attributes balanced</>
         )}
       </p>
       <p className={styles.numberOfDecisions}>
         You made <b>{statistics.numberOfDecisions}</b> decisions
       </p>
-      <p className={styles.highestRatedAttribute}>
-        Your highest rated attribute was{" "}
-        <b>{statistics.highestRatedAttribute}</b>
-      </p>
-      {playerHasWon && (
-        <p className={styles.lowestRatedAttribute}>
-          Your lowest rated attribute was{" "}
-          <b>{statistics.lowestRatedAttribute}</b>
-        </p>
-      )}
+
+      <ul className={styles.attributes}>
+        <li>
+          <b>Financial</b>: {statistics.attributes.financial}
+        </li>
+
+        <li>
+          <b>Population Happiness</b>:{" "}
+          {statistics.attributes.populationHappiness}
+        </li>
+
+        <li>
+          <b>Domestic Political Favour</b>:{" "}
+          {statistics.attributes.domesticPoliticalFavour}
+        </li>
+        <li>
+          <b>Foreign Political Favour</b>:{" "}
+          {statistics.attributes.foreignPoliticalFavour}
+        </li>
+      </ul>
       <button className={styles.exitButton} onClick={() => exitFunc()}>
         Exit
       </button>
