@@ -42,7 +42,7 @@ class App extends React.Component<Props, State> {
       maxTurns: 10,
       hasExistingSave: gameState ? true : false,
       gameStarted: false,
-      gameIsOver: false,
+      gameIsOver: true,
       playerHasWon: false
     };
 

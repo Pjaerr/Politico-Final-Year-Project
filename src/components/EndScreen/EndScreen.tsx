@@ -32,20 +32,21 @@ const EndScreen = ({ playerHasWon, statistics, exitFunc }: Props) => {
         </p>
 
         <ul className={styles.attributes}>
-          <li>
+          <li className={styles.financialAttribute}>
             <b>Financial</b>: {statistics.attributes.financial}
           </li>
 
-          <li>
+          <li className={styles.populationHappinessAttribute}>
             <b>Population Happiness</b>:{" "}
             {statistics.attributes.populationHappiness}
           </li>
 
-          <li>
+          <li className={styles.domesticPoliticalFavourAttribute}>
             <b>Domestic Political Favour</b>:{" "}
             {statistics.attributes.domesticPoliticalFavour}
           </li>
-          <li>
+
+          <li className={styles.foreignPoliticalFavourAttribute}>
             <b>Foreign Political Favour</b>:{" "}
             {statistics.attributes.foreignPoliticalFavour}
           </li>
