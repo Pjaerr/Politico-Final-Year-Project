@@ -5,6 +5,9 @@ import styles from "./App.module.scss";
 
 //Components
 import TurnCounter from "../TurnCounter/TurnCounter";
+import Attributes from "../Attributes/Attributes";
+import StartScreen from "../StartScreen/StartScreen";
+import EndScreen from "../EndScreen/EndScreen";
 
 //Systems
 import Systems from "../../systems/Systems";
@@ -15,8 +18,6 @@ import IAttributes from "../../interfaces/IAttributes";
 
 //Data
 import DefaultGameState from "../../data/DefaultGameState";
-import StartScreen from "../StartScreen/StartScreen";
-import EndScreen from "../EndScreen/EndScreen";
 
 //Utils
 import * as utils from "../../utils/utils";
@@ -42,7 +43,7 @@ class App extends React.Component<Props, State> {
       maxTurns: 10,
       hasExistingSave: gameState ? true : false,
       gameStarted: false,
-      gameIsOver: true,
+      gameIsOver: false,
       playerHasWon: false
     };
 
@@ -136,6 +137,7 @@ class App extends React.Component<Props, State> {
         <>
           {this.state.gameStarted ? (
             <div className={styles.container}>
+              <Attributes attributes={this.state.gameState.attributes} />
               <TurnCounter currentTurn={this.state.gameState.turn} />
               <button
                 onClick={() => {
