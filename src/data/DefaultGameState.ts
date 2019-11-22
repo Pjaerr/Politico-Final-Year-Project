@@ -3,9 +3,9 @@ import IGameState from "../interfaces/IGameState";
 export default {
     turn: 0,
     attributes: {
-        financial: 100,
-        populationHappiness: 100,
-        domesticPoliticalFavour: 100,
+        financial: 80,
+        populationHappiness: 30,
+        domesticPoliticalFavour: 50,
         foreignPoliticalFavour: 100
     },
     provinces: {
