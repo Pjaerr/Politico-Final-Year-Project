@@ -141,7 +141,12 @@ class App extends React.Component<Props, State> {
               <TurnCounter currentTurn={this.state.gameState.turn} />
               <button
                 onClick={() => {
-                  this.nextTurn();
+                  this.nextTurn({
+                    domesticPoliticalFavour: -1,
+                    financial: 0,
+                    foreignPoliticalFavour: 5,
+                    populationHappiness: 2
+                  });
                 }}
               >
                 Increment Turn
