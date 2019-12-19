@@ -1,3 +1,22 @@
+@import "../variables";
+@import "../mixins";
+
 .container {
-  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  z-index: 2;
+}
+
+.turnCount {
+  color: $blue;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  @include button($blue, $white);
 }

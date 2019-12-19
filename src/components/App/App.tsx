@@ -8,7 +8,7 @@ import TurnCounter from "../TurnCounter/TurnCounter";
 import Attributes from "../Attributes/Attributes";
 import StartScreen from "../StartScreen/StartScreen";
 import EndScreen from "../EndScreen/EndScreen";
-import DecisionContainer from "./DecisionContainer";
+import DecisionContainer from "../DecisionContainer/DecisionContainer";
 
 //Systems
 import Systems from "../../systems/Systems";
@@ -23,6 +23,7 @@ import Decisions from "../../data/Decisions";
 
 //Utils
 import * as utils from "../../utils/utils";
+import MapContainer from "../MapContainer/MapContainer";
 
 type State = {
   gameState: IGameState;
@@ -143,6 +144,7 @@ class App extends React.Component<Props, State> {
           {this.state.gameStarted ? (
             <div className={styles.container}>
               <Attributes attributes={this.state.gameState.attributes} />
+              <MapContainer></MapContainer>
 
               {this.state.decisionIsActive ? (
                 <DecisionContainer
@@ -151,12 +153,12 @@ class App extends React.Component<Props, State> {
                 />
               ) : (
                 <>
-                  <TurnCounter currentTurn={this.state.gameState.turn} />
-                  <button
-                    onClick={() => this.setState({ decisionIsActive: true })}
-                  >
-                    Next Turn
-                  </button>
+                  <TurnCounter
+                    currentTurn={this.state.gameState.turn}
+                    onNextTurnClick={() =>
+                      this.setState({ decisionIsActive: true })
+                    }
+                  />
                 </>
               )}
             </div>
