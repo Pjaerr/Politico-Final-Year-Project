@@ -8,6 +8,7 @@ import TurnCounter from "../TurnCounter/TurnCounter";
 import Attributes from "../Attributes/Attributes";
 import StartScreen from "../StartScreen/StartScreen";
 import EndScreen from "../EndScreen/EndScreen";
+import DecisionContainer from "./DecisionContainer";
 
 //Systems
 import Systems from "../../systems/Systems";
@@ -18,6 +19,7 @@ import IAttributes from "../../interfaces/IAttributes";
 
 //Data
 import DefaultGameState from "../../data/DefaultGameState";
+import Decisions from "../../data/Decisions";
 
 //Utils
 import * as utils from "../../utils/utils";
@@ -29,6 +31,7 @@ type State = {
   gameStarted: boolean;
   gameIsOver: boolean;
   playerHasWon: boolean;
+  decisionIsActive: boolean;
 };
 
 type Props = {};
@@ -40,11 +43,12 @@ class App extends React.Component<Props, State> {
     const gameState = Systems.DataStorage.get<IGameState>("GameState");
 
     const defaultState = {
-      maxTurns: 10,
+      maxTurns: Decisions.length - 1,
       hasExistingSave: gameState ? true : false,
       gameStarted: false,
       gameIsOver: false,
-      playerHasWon: false
+      playerHasWon: false,
+      decisionIsActive: false
     };
 
     if (gameState) {
@@ -109,7 +113,8 @@ class App extends React.Component<Props, State> {
       Systems.DataStorage.set<IGameState>("GameState", newGameState);
 
       return {
-        gameState: newGameState
+        gameState: newGameState,
+        decisionIsActive: false
       };
     });
   };
@@ -138,19 +143,22 @@ class App extends React.Component<Props, State> {
           {this.state.gameStarted ? (
             <div className={styles.container}>
               <Attributes attributes={this.state.gameState.attributes} />
-              <TurnCounter currentTurn={this.state.gameState.turn} />
-              <button
-                onClick={() => {
-                  this.nextTurn({
-                    domesticPoliticalFavour: -1,
-                    financial: 0,
-                    foreignPoliticalFavour: 5,
-                    populationHappiness: 2
-                  });
-                }}
-              >
-                Increment Turn
-              </button>
+
+              {this.state.decisionIsActive ? (
+                <DecisionContainer
+                  decision={Decisions[this.state.gameState.turn]}
+                  nextTurn={this.nextTurn}
+                />
+              ) : (
+                <>
+                  <TurnCounter currentTurn={this.state.gameState.turn} />
+                  <button
+                    onClick={() => this.setState({ decisionIsActive: true })}
+                  >
+                    Next Turn
+                  </button>
+                </>
+              )}
             </div>
           ) : (
             <StartScreen

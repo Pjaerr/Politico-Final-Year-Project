@@ -11,6 +11,7 @@ export enum PoliticalLeaning {
 }
 
 export interface IDecision {
+    name: string;
     description: string;
     politicalLeaning: PoliticalLeaning;
     positiveModifiers: IAttributes;

@@ -1,9 +1,19 @@
 import { IDecision, PoliticalLeaning } from '../interfaces/IDecision';
 
 
+/**
+ * Each Decision object has Positive and Negative modifiers. For each decision that is made
+ * If, for a particular attribute, it is a positive outcome, then the Positive modifier will
+ * be applied to the overall attributes and vice versa.
+ * 
+ * EG: The majority of your provinces lean Left on the political spectrum but you say Yes to
+ * a decision that is Right leaning. This will use the negative modifier from the decision for
+ * population happiness.
+ */
 const Decisions: IDecision[] = [
     {
-        description: "Decision 1",
+        name: "Decision 1",
+        description: "lorem ipsum dimsum",
         politicalLeaning: PoliticalLeaning.Centre,
         positiveModifiers: {
             domesticPoliticalFavour: 0,
@@ -19,7 +29,8 @@ const Decisions: IDecision[] = [
         }
     },
     {
-        description: "Decision 2",
+        name: "Decision 2",
+        description: "lorem ipsum dimsum",
         politicalLeaning: PoliticalLeaning.Right,
         positiveModifiers: {
             domesticPoliticalFavour: 30,
@@ -35,7 +46,8 @@ const Decisions: IDecision[] = [
         }
     },
     {
-        description: "Decision 3",
+        name: "Decision 3",
+        description: "lorem ipsum dimsum",
         politicalLeaning: PoliticalLeaning.Left,
         positiveModifiers: {
             domesticPoliticalFavour: 0,

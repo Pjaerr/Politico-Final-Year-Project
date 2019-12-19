@@ -1,0 +1,38 @@
+@import "../variables";
+@import "../mixins.scss";
+
+.container {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: $white;
+  margin-left: 5px;
+  margin-right: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 7px;
+  color: $blue;
+  text-align: center;
+
+  height: 360px;
+  width: 480px;
+
+  @media (min-width: $brk-medium) {
+    width: 500px;
+    height: 380px;
+  }
+}
+
+.yesButton {
+  margin-top: 20px;
+  @include button(#fff, rgba(46, 204, 113, 0.8));
+}
+
+.noButton {
+  margin-top: 20px;
+  @include button(#fff, rgba(231, 76, 60, 0.8));
+}
