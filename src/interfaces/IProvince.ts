@@ -11,6 +11,7 @@ interface IProvincePoliticalLeaningFactors {
 }
 
 interface IProvince {
+  name: string;
   population: number;
   happiness: number;
   factors: IProvincePoliticalLeaningFactors;

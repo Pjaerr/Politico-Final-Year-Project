@@ -22,3 +22,7 @@ export const getPoliticalLeaning = (province: IProvince): PoliticalLeaning => {
 
     return (Math.floor(Math.random() * Math.floor(6))) as PoliticalLeaning;
 }
+
+export const getPoliticalLeaningAsString = (province: IProvince): string => {
+    return "Left";
+}

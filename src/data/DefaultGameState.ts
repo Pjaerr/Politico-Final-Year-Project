@@ -8,8 +8,9 @@ export default {
         domesticPoliticalFavour: 50,
         foreignPoliticalFavour: 100
     },
-    provinces: {
-        bedfordshire: {
+    provinces: [
+        {
+            name: "Bedfordshire",
             population: 31670000,
             happiness: 100,
             factors: {
@@ -19,7 +20,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        berkshire: {
+        {
+            name: "Berkshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -29,7 +32,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        buckinghamshire: {
+        {
+            name: "Buckinghamshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -39,7 +44,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        cheshire: {
+        {
+            name: "Cheshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -49,7 +56,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        cambridgeshire: {
+        {
+            name: "Cambridgeshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -59,7 +68,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        cornwall: {
+        {
+            name: "Cornwall",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -69,7 +80,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        cumbria: {
+        {
+            name: "Cumbria",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -79,7 +92,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        derbyshire: {
+        {
+            name: "Derbyshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -89,7 +104,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        durham: {
+        {
+            name: "Durham",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -99,7 +116,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        dorset: {
+        {
+            name: "Dorset",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -109,7 +128,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        devon: {
+        {
+            name: "Devon",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -119,7 +140,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        essex: {
+        {
+            name: "Essex",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -129,7 +152,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        gloucestershire: {
+        {
+            name: "Gloucestershire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -139,7 +164,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        greater_london: {
+        {
+            name: "Greater London",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -149,7 +176,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        hampshire: {
+        {
+            name: "Hampshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -159,7 +188,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        herefordshire: {
+        {
+            name: "Herefordshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -169,7 +200,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        hertfordshire: {
+        {
+            name: "Hertfordshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -179,7 +212,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        kent: {
+        {
+            name: "Kent",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -189,7 +224,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        lancashire: {
+        {
+            name: "Lancashire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -199,7 +236,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        leicestershire: {
+        {
+            name: "Leicestershire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -209,7 +248,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        lincolnshire: {
+        {
+            name: "Lincolnshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -219,7 +260,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        northamptonshire: {
+        {
+            name: "Northamptonshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -229,7 +272,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        northumberland: {
+        {
+            name: "Northumberland",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -239,7 +284,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        norfolk: {
+        {
+            name: "Norfolk",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -249,7 +296,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        northern_ireland: {
+        {
+            name: "Northern Ireland",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -259,7 +308,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        nottinghamshire: {
+        {
+            name: "Nottinghamshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -269,7 +320,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        oxfordshire: {
+        {
+            name: "Oxfordshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -279,7 +332,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        rutland: {
+        {
+            name: "Rutland",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -289,7 +344,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        scotland: {
+        {
+            name: "Scotland",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -299,7 +356,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        suffolk: {
+        {
+            name: "Suffolk",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -309,7 +368,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        somerset: {
+        {
+            name: "Somerset",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -319,7 +380,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        shropshire: {
+        {
+            name: "Shropshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -329,7 +392,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        surrey: {
+        {
+            name: "Surrey",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -339,7 +404,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        staffordshire: {
+        {
+            name: "Staffordshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -349,7 +416,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        sussex: {
+        {
+            name: "Sussex",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -359,7 +428,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        wales: {
+        {
+            name: "Wales",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -369,7 +440,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        wiltshire: {
+        {
+            name: "Wiltshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -379,7 +452,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        worcestershire: {
+        {
+            name: "Worcestershire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -389,7 +464,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        warwickshire: {
+        {
+            name: "Warwickshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -399,7 +476,9 @@ export default {
                 foreignPopulation: 5
             }
         },
-        yorkshire: {
+        {
+            name: "Yorkshire",
+
             population: 31670000,
             happiness: 100,
             factors: {
@@ -409,5 +488,5 @@ export default {
                 foreignPopulation: 5
             }
         }
-    }
+    ]
 } as IGameState;

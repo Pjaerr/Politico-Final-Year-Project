@@ -8,8 +8,13 @@ import Provinces from "../../data/Provinces";
 
 //Styles
 import styles from "./MapContainer.module.scss";
+import IProvince from "../../interfaces/IProvince";
 
-const MapContainer = () => {
+type Props = {
+  onProvinceClick: (provinceName: string) => void;
+};
+
+const MapContainer = ({ onProvinceClick }: Props) => {
   const svgRef = React.createRef<SVGSVGElement>();
 
   const [width, setWidth] = useState(0);
@@ -30,7 +35,13 @@ const MapContainer = () => {
       viewBox={`0 0 ${width} ${height}`}
     >
       {Provinces.map(province => (
-        <MapProvince key={province.name} svgPath={province.svgPath} />
+        <MapProvince
+          key={province.name}
+          svgPath={province.svgPath}
+          onClick={() => {
+            onProvinceClick(province.name);
+          }}
+        />
       ))}
     </svg>
   );

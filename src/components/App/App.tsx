@@ -24,6 +24,8 @@ import Decisions from "../../data/Decisions";
 //Utils
 import * as utils from "../../utils/utils";
 import MapContainer from "../MapContainer/MapContainer";
+import MapProvinceInfo from "../MapProvinceInfo/MapProvinceInfo";
+import IProvince from "../../interfaces/IProvince";
 
 type State = {
   gameState: IGameState;
@@ -33,6 +35,8 @@ type State = {
   gameIsOver: boolean;
   playerHasWon: boolean;
   decisionIsActive: boolean;
+  regionInfoIsOpen: boolean;
+  activeProvince: IProvince | null;
 };
 
 type Props = {};
@@ -46,10 +50,12 @@ class App extends React.Component<Props, State> {
     const defaultState = {
       maxTurns: Decisions.length - 1,
       hasExistingSave: gameState ? true : false,
-      gameStarted: false,
+      gameStarted: true,
       gameIsOver: false,
       playerHasWon: false,
-      decisionIsActive: false
+      decisionIsActive: false,
+      regionInfoIsOpen: false,
+      activeProvince: null
     };
 
     if (gameState) {
@@ -144,22 +150,36 @@ class App extends React.Component<Props, State> {
           {this.state.gameStarted ? (
             <div className={styles.container}>
               <Attributes attributes={this.state.gameState.attributes} />
-              <MapContainer></MapContainer>
+              <MapContainer
+                onProvinceClick={(provinceName: string) => {
+                  this.setState({
+                    regionInfoIsOpen: true,
+                    activeProvince: this.state.gameState.provinces.filter(
+                      province => province.name === provinceName
+                    )[0]
+                  });
+                }}
+              ></MapContainer>
 
               {this.state.decisionIsActive ? (
                 <DecisionContainer
                   decision={Decisions[this.state.gameState.turn]}
                   nextTurn={this.nextTurn}
                 />
+              ) : this.state.regionInfoIsOpen ? (
+                <MapProvinceInfo
+                  onCloseFunc={() => {
+                    this.setState({ regionInfoIsOpen: false });
+                  }}
+                  province={this.state.activeProvince}
+                />
               ) : (
-                <>
-                  <TurnCounter
-                    currentTurn={this.state.gameState.turn}
-                    onNextTurnClick={() =>
-                      this.setState({ decisionIsActive: true })
-                    }
-                  />
-                </>
+                <TurnCounter
+                  currentTurn={this.state.gameState.turn}
+                  onNextTurnClick={() =>
+                    this.setState({ decisionIsActive: true })
+                  }
+                />
               )}
             </div>
           ) : (

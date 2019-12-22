@@ -1,10 +1,10 @@
 import IAttributes from "./IAttributes";
-import IProvinces from "./IProvinces";
+import IProvince from "./IProvince";
 
 interface IGameState {
   turn: number;
   attributes: IAttributes;
-  provinces: IProvinces;
+  provinces: IProvince[]
 }
 
 export default IGameState;
