@@ -50,7 +50,7 @@ class App extends React.Component<Props, State> {
     const defaultState = {
       maxTurns: Decisions.length - 1,
       hasExistingSave: gameState ? true : false,
-      gameStarted: true,
+      gameStarted: false,
       gameIsOver: false,
       playerHasWon: false,
       decisionIsActive: false,
@@ -72,14 +72,11 @@ class App extends React.Component<Props, State> {
   }
 
   startNewGame = () => {
-    if (this.state.hasExistingSave) {
-      this.setState({
-        gameState: DefaultGameState,
-        gameStarted: true
-      });
-    } else {
-      this.setState({ gameStarted: true });
-    }
+    Systems.DataStorage.set<IGameState>("GameState", DefaultGameState);
+    this.setState({
+      gameState: DefaultGameState,
+      gameStarted: true
+    });
   };
 
   continueGame = () => {

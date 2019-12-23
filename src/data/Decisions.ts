@@ -23,7 +23,7 @@ const Decisions: IDecision[] = [
         },
         negativeModifiers: {
             domesticPoliticalFavour: -5,
-            financial: 0,
+            financial: -90,
             foreignPoliticalFavour: 0,
             populationHappiness: 0
         }
