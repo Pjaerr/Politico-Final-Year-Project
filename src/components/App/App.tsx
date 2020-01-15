@@ -14,7 +14,7 @@ import DecisionContainer from "../DecisionContainer/DecisionContainer";
 import Systems from "../../systems/Systems";
 
 //Interfaces
-import IGameState from "../../interfaces/IGameState";
+import IGameData from "../../interfaces/IGameData";
 import IAttributes from "../../interfaces/IAttributes";
 
 //Data
@@ -28,7 +28,7 @@ import MapProvinceInfo from "../MapProvinceInfo/MapProvinceInfo";
 import IProvince from "../../interfaces/IProvince";
 
 type State = {
-  gameState: IGameState;
+  gameState: IGameData;
   maxTurns: number;
   hasExistingSave: boolean;
   gameStarted: boolean;
@@ -39,13 +39,11 @@ type State = {
   activeProvince: IProvince | null;
 };
 
-type Props = {};
-
-class App extends React.Component<Props, State> {
-  constructor(props: Props) {
+class App extends React.Component<{}, State> {
+  constructor(props: {}) {
     super(props);
 
-    const gameState = Systems.DataStorage.get<IGameState>("GameState");
+    const gameState = Systems.DataStorage.get<IGameData>("GameState");
 
     const defaultState = {
       maxTurns: Decisions.length - 1,
@@ -72,7 +70,7 @@ class App extends React.Component<Props, State> {
   }
 
   startNewGame = () => {
-    Systems.DataStorage.set<IGameState>("GameState", DefaultGameState);
+    Systems.DataStorage.set<IGameData>("GameState", DefaultGameState);
     this.setState({
       gameState: DefaultGameState,
       gameStarted: true
@@ -114,7 +112,7 @@ class App extends React.Component<Props, State> {
       };
 
       //Save the game state to storage before we move to the next turn
-      Systems.DataStorage.set<IGameState>("GameState", newGameState);
+      Systems.DataStorage.set<IGameData>("GameState", newGameState);
 
       return {
         gameState: newGameState,
