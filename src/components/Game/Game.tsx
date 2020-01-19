@@ -22,38 +22,41 @@ type Props = {
 };
 
 const Game = ({ gameData, nextTurn }: Props) => {
-  const [activeRegion, setActiveRegion] = useState<IProvince | null>(null);
+  const [activeProvince, setActiveProvince] = useState<IProvince | null>(null);
   const [decisionIsActive, setDecisionIsActive] = useState<boolean>(false);
-  const [regionIsActive, setRegionIsActive] = useState<boolean>(false);
+  const [provinceIsActive, setProvinceIsActive] = useState<boolean>(false);
 
   return (
     <div className={styles.container}>
       <Attributes attributes={gameData.attributes} />
       <MapContainer
         onProvinceClick={(provinceName: string) => {
-          setActiveRegion(
+          setActiveProvince(
             gameData.provinces.filter(
               province => province.name === provinceName
             )[0]
           );
 
-          setRegionIsActive(true);
+          setProvinceIsActive(true);
         }}
       ></MapContainer>
 
       {decisionIsActive && (
         <DecisionContainer
           decision={Systems.DecisionManager.decisions[gameData.turn]}
-          nextTurn={nextTurn}
+          nextTurn={(attributeAdjustments: IAttributes) => {
+            setDecisionIsActive(false);
+            nextTurn(attributeAdjustments);
+          }}
         />
       )}
 
-      {regionIsActive && (
+      {provinceIsActive && (
         <MapProvinceInfo
           onCloseFunc={() => {
-            setRegionIsActive(false);
+            setProvinceIsActive(false);
           }}
-          province={activeRegion}
+          province={activeProvince}
         />
       )}
 

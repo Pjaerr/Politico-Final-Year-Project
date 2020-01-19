@@ -24,7 +24,10 @@ const MapProvinceInfo = ({ province, onCloseFunc }: Props) => {
             <h1>{province.name}</h1>
           </div>
           <p className={styles.population}>
-            <img src="population-happiness.svg" alt="Region Population Icon" />
+            <img
+              src="population-happiness.svg"
+              alt="Province Population Icon"
+            />
             {province.population}
           </p>
           <p className={styles.politicalLeaning}>

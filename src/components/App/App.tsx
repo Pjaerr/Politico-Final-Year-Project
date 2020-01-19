@@ -1,78 +1,88 @@
 import React from "react";
 
-//Styles
-import styles from "./App.module.scss";
-
 //Components
-import TurnCounter from "../TurnCounter/TurnCounter";
-import Attributes from "../Attributes/Attributes";
-import StartScreen from "../StartScreen/StartScreen";
-import EndScreen from "../EndScreen/EndScreen";
-import DecisionContainer from "../DecisionContainer/DecisionContainer";
-
-//Systems
-import Systems from "../../systems/Systems";
+import Game from "../Game/Game";
 
 //Interfaces
 import IGameData from "../../interfaces/IGameData";
-import IAttributes from "../../interfaces/IAttributes";
 
-//Data
-import DefaultGameState from "../../data/DefaultGameState";
-import Decisions from "../../data/Decisions";
+//Types
+import GameState from "../../types/GameState";
+
+//Systems
+import Systems from "../../systems/Systems";
+import IAttributes from "../../interfaces/IAttributes";
+import EndScreen from "../EndScreen/EndScreen";
+import StartScreen from "../StartScreen/StartScreen";
 
 //Utils
 import * as utils from "../../utils/utils";
-import MapContainer from "../MapContainer/MapContainer";
-import MapProvinceInfo from "../MapProvinceInfo/MapProvinceInfo";
-import IProvince from "../../interfaces/IProvince";
 
-type State = {
-  gameState: IGameData;
-  maxTurns: number;
-  hasExistingSave: boolean;
-  gameStarted: boolean;
-  gameIsOver: boolean;
-  playerHasWon: boolean;
-  decisionIsActive: boolean;
-  regionInfoIsOpen: boolean;
-  activeProvince: IProvince | null;
-};
+type Props = {};
 
-class App extends React.Component<{}, State> {
-  constructor(props: {}) {
+class App extends React.Component<Props, GameState> {
+  constructor(props: Props) {
     super(props);
 
-    const gameState = Systems.DataStorage.get<IGameData>("GameState");
+    this.setupState();
+  }
 
-    const defaultState = {
-      maxTurns: Decisions.length - 1,
-      hasExistingSave: gameState ? true : false,
-      gameStarted: false,
-      gameIsOver: false,
-      playerHasWon: false,
-      decisionIsActive: false,
-      regionInfoIsOpen: false,
-      activeProvince: null
-    };
+  componentDidUpdate() {
+    //Avoid infinite state updates if the game is over
+    if (this.state.gameIsOver) return;
 
-    if (gameState) {
-      this.state = {
-        gameState: gameState,
-        ...defaultState
-      };
-    } else {
-      this.state = {
-        gameState: DefaultGameState,
-        ...defaultState
-      };
+    //Have we reached the maximum number of turns?
+    if (this.state.gameData.turn > this.state.maxTurns) {
+      //End the game with a win
+      this.endGame(true);
+    }
+    //Are any of the attributes below zero?
+    else if (utils.attributesAreBelowZero(this.state.gameData.attributes)) {
+      //End the game with a loss
+      this.endGame(false);
     }
   }
 
-  startNewGame = () => {
-    Systems.DataStorage.set<IGameData>("GameState", DefaultGameState);
+  endGame = (playerHasWon: boolean) => {
     this.setState({
-      gameState: DefaultGameState,
+      gameIsOver: true,
+      playerHasWon
+    });
+  };
+
+  setupState = () => {
+    const gameData = Systems.DataStorage.get<IGameData>("GameData");
+
+    const defaultGameState = {
+      maxTurns: Systems.DecisionManager.numberOfDecisions,
+      hasExistingSave: gameData ? true : false,
+      gameStarted: false,
+      gameIsOver: false,
+      playerHasWon: false
+    };
+
+    //If a save already exists, use it.
+    if (gameData) {
+      this.state = {
+        gameData,
+        ...defaultGameState
+      };
+    }
+    //If not, get fresh game data.
+    else {
+      this.state = {
+        gameData: Systems.GameDataManager.getFreshGameData(),
+        ...defaultGameState
+      };
+    }
+  };
+
+  startNewGame = () => {
+    const gameData: IGameData = Systems.GameDataManager.getFreshGameData();
+
+    Systems.DataStorage.set<IGameData>("GameData", gameData);
+    this.setState({
+      gameData,
       gameStarted: true
     });
   };
@@ -80,6 +90,16 @@ class App extends React.Component<{}, State> {
   continueGame = () => {
     this.setState({
       gameStarted: true
+    });
+  };
+
+  restartGame = () => {
+    this.setState({
+      gameData: Systems.GameDataManager.getFreshGameData(),
+      hasExistingSave: false,
+      gameStarted: false,
+      gameIsOver: false,
+      playerHasWon: false
     });
   };
 
@@ -93,119 +113,54 @@ class App extends React.Component<{}, State> {
   ) => {
     this.setState(prevState => {
       const newGameState = {
-        ...prevState.gameState,
+        ...prevState.gameData,
         attributes: {
           financial:
-            prevState.gameState.attributes.financial +
+            prevState.gameData.attributes.financial +
             attributeAdjustments.financial,
           populationHappiness:
-            prevState.gameState.attributes.populationHappiness +
+            prevState.gameData.attributes.populationHappiness +
             attributeAdjustments.populationHappiness,
           domesticPoliticalFavour:
-            prevState.gameState.attributes.domesticPoliticalFavour +
+            prevState.gameData.attributes.domesticPoliticalFavour +
             attributeAdjustments.domesticPoliticalFavour,
           foreignPoliticalFavour:
-            prevState.gameState.attributes.foreignPoliticalFavour +
+            prevState.gameData.attributes.foreignPoliticalFavour +
             attributeAdjustments.foreignPoliticalFavour
         },
-        turn: prevState.gameState.turn + 1
+        turn: prevState.gameData.turn + 1
       };
 
       //Save the game state to storage before we move to the next turn
-      Systems.DataStorage.set<IGameData>("GameState", newGameState);
+      Systems.DataStorage.set<IGameData>("GameData", newGameState);
 
       return {
-        gameState: newGameState,
-        decisionIsActive: false
+        gameData: newGameState
       };
     });
   };
 
-  componentDidUpdate() {
-    //Avoid infinite state updates if the game is over
-    if (this.state.gameIsOver) return;
-
-    if (this.state.gameState.turn > this.state.maxTurns) {
-      this.setState({
-        gameIsOver: true,
-        playerHasWon: true
-      });
-    } else if (utils.attributesAreBelowZero(this.state.gameState.attributes)) {
-      this.setState({
-        gameIsOver: true,
-        playerHasWon: false
-      });
-    }
-  }
-
   render() {
-    if (!this.state.gameIsOver) {
+    if (!this.state.gameStarted) {
       return (
-        <>
-          {this.state.gameStarted ? (
-            <div className={styles.container}>
-              <Attributes attributes={this.state.gameState.attributes} />
-              <MapContainer
-                onProvinceClick={(provinceName: string) => {
-                  this.setState({
-                    regionInfoIsOpen: true,
-                    activeProvince: this.state.gameState.provinces.filter(
-                      province => province.name === provinceName
-                    )[0]
-                  });
-                }}
-              ></MapContainer>
-
-              {this.state.decisionIsActive ? (
-                <DecisionContainer
-                  decision={Decisions[this.state.gameState.turn]}
-                  nextTurn={this.nextTurn}
-                />
-              ) : this.state.regionInfoIsOpen ? (
-                <MapProvinceInfo
-                  onCloseFunc={() => {
-                    this.setState({ regionInfoIsOpen: false });
-                  }}
-                  province={this.state.activeProvince}
-                />
-              ) : (
-                <TurnCounter
-                  currentTurn={this.state.gameState.turn}
-                  onNextTurnClick={() =>
-                    this.setState({ decisionIsActive: true })
-                  }
-                />
-              )}
-            </div>
-          ) : (
-            <StartScreen
-              showContinueButton={this.state.hasExistingSave}
-              continueFunc={this.continueGame}
-              startFunc={this.startNewGame}
-            />
-          )}
-        </>
+        <StartScreen
+          showContinueButton={this.state.hasExistingSave}
+          continueFunc={this.continueGame}
+          startFunc={this.startNewGame}
+        />
       );
+    } else if (!this.state.gameIsOver) {
+      return <Game gameData={this.state.gameData} nextTurn={this.nextTurn} />;
     } else {
       return (
-        <>
-          <EndScreen
-            exitFunc={() => {
-              this.setState({
-                gameState: DefaultGameState,
-                hasExistingSave: false,
-                gameStarted: false,
-                gameIsOver: false,
-                playerHasWon: false
-              });
-            }}
-            playerHasWon={this.state.playerHasWon}
-            statistics={{
-              numberOfDecisions: this.state.gameState.turn,
-              attributes: this.state.gameState.attributes
-            }}
-          />
-        </>
+        <EndScreen
+          exitFunc={this.restartGame}
+          playerHasWon={this.state.playerHasWon}
+          statistics={{
+            numberOfDecisions: this.state.gameData.turn,
+            attributes: this.state.gameData.attributes
+          }}
+        />
       );
     }
   }
