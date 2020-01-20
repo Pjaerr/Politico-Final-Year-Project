@@ -18,7 +18,7 @@ export const attributesAreBelowZero = ({
 
 export const getPoliticalLeaning = (province: IProvince): PoliticalLeaning => {
     //Do some calculations here using fuzzy logic that use the factors of a given
-    //province to work out a political leaning for said region.
+    //province to work out a political leaning for said province.
 
     return (Math.floor(Math.random() * Math.floor(6))) as PoliticalLeaning;
 }
