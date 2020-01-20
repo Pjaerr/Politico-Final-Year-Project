@@ -1,13 +1,8 @@
-interface IAgeRange {
-  min: number;
-  max: number;
-}
-
 interface IProvincePoliticalLeaningFactors {
+  populationDensity: number;
+  nonWhiteBritishEthnicPercentage: number;
   numberOfUniversities: number;
-  averageIncome: number;
-  ageRange: IAgeRange;
-  foreignPopulation: number;
+  averageSalary: number;
 }
 
 interface IProvince {

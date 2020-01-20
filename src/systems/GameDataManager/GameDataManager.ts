@@ -1,5 +1,14 @@
 import IGameDataManager from "./IGameDataManager";
 import IGameData from "../../interfaces/IGameData";
+import IProvince from "../../interfaces/IProvince";
+import Provinces from "../../data/Provinces";
+
+// const generateProvinces = (): IProvince[] => {
+//     let 
+//     for (const province of Provinces) {
+
+//     }
+// };
 
 class GameDataManager implements IGameDataManager {
     getFreshGameData(): IGameData {
