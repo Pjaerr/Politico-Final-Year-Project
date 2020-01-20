@@ -26,3 +26,29 @@ export const getPoliticalLeaning = (province: IProvince): PoliticalLeaning => {
 export const getPoliticalLeaningAsString = (province: IProvince): string => {
     return "Left";
 }
+
+//Generating realistic values for political leaning factors
+
+export const generateRandomPopulation = (): number => {
+    return 317600;
+}
+
+export const generateRandomHappiness = (): number => {
+    return 80;
+}
+
+export const generateRandomPopulationDensity = (): number => {
+    return 3600;
+};
+
+export const generateRandomNumberOfUniversities = (): number => {
+    return 5;
+}
+
+export const generateRandomAverageSalary = (): number => {
+    return 32000;
+}
+
+export const generateRandomNonWhiteBritishEthnicPercentage = (): number => {
+    return 12;
+}
