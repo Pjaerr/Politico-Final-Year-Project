@@ -27,28 +27,42 @@ export const getPoliticalLeaningAsString = (province: IProvince): string => {
     return "Left";
 }
 
-//Generating realistic values for political leaning factors
+export const randomNumber = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 export const generateRandomPopulation = (): number => {
-    return 317600;
+    //Range:
+    /* 8,000 ->  9,000,000 */
+    return randomNumber(8000, 9000000);
 }
 
 export const generateRandomHappiness = (): number => {
-    return 80;
+    //Range:
+    /* 20 -> 100 */
+    return randomNumber(20, 100);
 }
 
 export const generateRandomPopulationDensity = (): number => {
-    return 3600;
+    //Range:
+    /* 20 -> 17,000 */
+    return randomNumber(20, 17000);
 };
 
 export const generateRandomNumberOfUniversities = (): number => {
-    return 5;
+    //Range:
+    /* 0 -> 40 */
+    return randomNumber(0, 40);
 }
 
 export const generateRandomAverageSalary = (): number => {
-    return 32000;
+    //Range:
+    /* 13,000 -> 100,000 */
+    return randomNumber(13000, 100000);
 }
 
 export const generateRandomNonWhiteBritishEthnicPercentage = (): number => {
-    return 12;
+    //Range:
+    /* 0 -> 100 */
+    return randomNumber(0, 100);
 }

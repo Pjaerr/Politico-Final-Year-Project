@@ -22,7 +22,7 @@ type Props = {
 };
 
 const Game = ({ gameData, nextTurn }: Props) => {
-  const [activeProvince, setActiveProvince] = useState<IProvince | null>(null);
+  const [activeProvince, setActiveProvince] = useState<IProvince>();
   const [decisionIsActive, setDecisionIsActive] = useState<boolean>(false);
   const [provinceIsActive, setProvinceIsActive] = useState<boolean>(false);
 
@@ -51,7 +51,7 @@ const Game = ({ gameData, nextTurn }: Props) => {
         />
       )}
 
-      {provinceIsActive && (
+      {provinceIsActive && activeProvince && (
         <MapProvinceInfo
           onCloseFunc={() => {
             setProvinceIsActive(false);

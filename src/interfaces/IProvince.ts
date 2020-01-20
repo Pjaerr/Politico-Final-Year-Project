@@ -9,6 +9,7 @@ interface IProvince {
   name: string;
   population: number;
   happiness: number;
+  isInParty: boolean;
   factors: IProvincePoliticalLeaningFactors;
 }
 

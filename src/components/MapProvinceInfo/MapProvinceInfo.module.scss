@@ -1,55 +1,5 @@
 @import "../variables";
 
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  z-index: 2;
-
-  @media (min-width: $brk-medium) {
-    align-items: center;
-  }
-}
-
-.header {
-  display: flex;
-  flex-direction: row;
-
-  .backButtonContainer {
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  h1 {
-    text-align: center;
-    font-size: $modalHeadingFontSizeMedium;
-    margin: 0 auto;
-  }
-}
-
-.modal {
-  background-color: $white;
-  margin-left: 5px;
-  margin-right: 5px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 7px;
-  color: $blue;
-  text-align: center;
-
-  height: 360px;
-  width: 480px;
-
-  @media (min-width: $brk-medium) {
-    width: 500px;
-    height: 380px;
-  }
-
-  margin-bottom: 5px;
-  padding: 5px;
-}
-
 .population {
   display: flex;
   justify-content: center;
@@ -78,15 +28,107 @@
   }
 }
 
+.statistic {
+  span {
+    font-weight: bold;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #333;
+  opacity: 0.5;
+  z-index: 5;
+}
+
+.container {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal {
+  padding: 10px;
+  overflow-y: scroll;
+  text-align: center;
+  border-radius: 7px;
+  background-color: $white;
+  box-shadow: 0px 0.5px 2px rgba(0, 0, 0, 0.25);
+  height: 420px;
+  color: $blue;
+  overflow: hidden;
+
+  @media (min-width: 400px) {
+    height: 520px;
+  }
+}
+
+@media (min-width: 820px) {
+  .container {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal {
+    width: 820px;
+    height: 620px;
+  }
+}
+.header {
+  margin-bottom: 20px;
+}
+.headerBackButton {
+  position: absolute;
+
+  button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: #f5f5f5;
+  }
+}
+
+.headerTitle {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  h1 {
+    margin: 0;
+    font-size: 1.4em;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  h2 {
+    font-size: 1.2em;
+  }
+}
+
 .statistics {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   h2 {
     text-decoration: underline;
     font-size: $modalHeadingFontSizeSmall;
   }
 }
 
-.statistic {
-  span {
-    font-weight: bold;
-  }
+.isInParty {
+  font-style: italic;
 }
