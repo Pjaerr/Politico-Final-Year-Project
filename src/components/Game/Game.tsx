@@ -6,7 +6,7 @@ import styles from "./Game.module.scss";
 //Components
 import Attributes from "../Attributes/Attributes";
 import MapContainer from "../MapContainer/MapContainer";
-import DecisionContainer from "../DecisionContainer/DecisionContainer";
+import Decision from "../Decision/Decision";
 import MapProvinceInfo from "../MapProvinceInfo/MapProvinceInfo";
 import TurnCounter from "../TurnCounter/TurnCounter";
 import IGameData from "../../interfaces/IGameData";
@@ -42,11 +42,25 @@ const Game = ({ gameData, nextTurn }: Props) => {
       />
 
       {decisionIsActive && (
-        <DecisionContainer
+        <Decision
           decision={Systems.DecisionManager.decisions[gameData.turn]}
-          nextTurn={(attributeAdjustments: IAttributes) => {
+          onYes={() => {
             setDecisionIsActive(false);
-            nextTurn(attributeAdjustments);
+            nextTurn({
+              domesticPoliticalFavour: 0,
+              financial: 0,
+              foreignPoliticalFavour: 0,
+              populationHappiness: 0
+            });
+          }}
+          onNo={() => {
+            setDecisionIsActive(false);
+            nextTurn({
+              domesticPoliticalFavour: 0,
+              financial: 0,
+              foreignPoliticalFavour: 0,
+              populationHappiness: 0
+            });
           }}
         />
       )}
