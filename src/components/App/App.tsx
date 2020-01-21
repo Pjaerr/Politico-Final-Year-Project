@@ -24,7 +24,31 @@ class App extends React.Component<Props, GameState> {
   constructor(props: Props) {
     super(props);
 
-    this.setupState();
+    //Setup State
+    const gameData = Systems.DataStorage.get<IGameData>("GameData");
+
+    const defaultGameState = {
+      maxTurns: Systems.DecisionManager.numberOfDecisions,
+      hasExistingSave: gameData ? true : false,
+      gameStarted: true,
+      gameIsOver: true,
+      playerHasWon: false
+    };
+
+    //If a save already exists, use it.
+    if (gameData) {
+      this.state = {
+        gameData,
+        ...defaultGameState
+      };
+    }
+    //If not, get fresh game data.
+    else {
+      this.state = {
+        gameData: Systems.GameDataManager.getFreshGameData(),
+        ...defaultGameState
+      };
+    }
   }
 
   componentDidUpdate() {
@@ -48,33 +72,6 @@ class App extends React.Component<Props, GameState> {
       gameIsOver: true,
       playerHasWon
     });
-  };
-
-  setupState = () => {
-    const gameData = Systems.DataStorage.get<IGameData>("GameData");
-
-    const defaultGameState = {
-      maxTurns: Systems.DecisionManager.numberOfDecisions,
-      hasExistingSave: gameData ? true : false,
-      gameStarted: false,
-      gameIsOver: false,
-      playerHasWon: false
-    };
-
-    //If a save already exists, use it.
-    if (gameData) {
-      this.state = {
-        gameData,
-        ...defaultGameState
-      };
-    }
-    //If not, get fresh game data.
-    else {
-      this.state = {
-        gameData: Systems.GameDataManager.getFreshGameData(),
-        ...defaultGameState
-      };
-    }
   };
 
   startNewGame = () => {

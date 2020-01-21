@@ -39,7 +39,7 @@ const Game = ({ gameData, nextTurn }: Props) => {
 
           setProvinceIsActive(true);
         }}
-      ></MapContainer>
+      />
 
       {decisionIsActive && (
         <DecisionContainer
