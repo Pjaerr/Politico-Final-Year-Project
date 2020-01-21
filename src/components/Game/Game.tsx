@@ -30,6 +30,7 @@ const Game = ({ gameData, nextTurn }: Props) => {
     <div className={styles.container}>
       <Attributes attributes={gameData.attributes} />
       <MapContainer
+        provinces={gameData.provinces}
         onProvinceClick={(provinceName: string) => {
           setActiveProvince(
             gameData.provinces.filter(

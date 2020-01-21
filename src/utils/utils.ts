@@ -1,6 +1,13 @@
 import IAttributes from '../interfaces/IAttributes';
 import IProvince from '../interfaces/IProvince';
 import { PoliticalLeaning } from '../interfaces/IDecision';
+import Provinces from '../data/Provinces';
+
+export const getProvinceSVGPath = (provinceName: string): string => {
+    return Provinces.filter(province => {
+        return (province.name === provinceName);
+    })[0].svgPath;
+}
 
 export const attributesAreBelowZero = ({
     financial,
