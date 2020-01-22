@@ -15,7 +15,7 @@ const getColour = (percentage: number): string => {
   return "#16A085";
 };
 
-const ProgressBar = ({ percentage, height = "20px" }: Props) => {
+const PercentageBar = ({ percentage, height = "20px" }: Props) => {
   return (
     <div
       style={{
@@ -35,4 +35,4 @@ const ProgressBar = ({ percentage, height = "20px" }: Props) => {
   );
 };
 
-export default ProgressBar;
+export default PercentageBar;

@@ -24,33 +24,7 @@ class App extends React.Component<Props, GameState> {
   constructor(props: Props) {
     super(props);
 
-    this.setupState();
-  }
-
-  componentDidUpdate() {
-    //Avoid infinite state updates if the game is over
-    if (this.state.gameIsOver) return;
-
-    //Have we reached the maximum number of turns?
-    if (this.state.gameData.turn > this.state.maxTurns) {
-      //End the game with a win
-      this.endGame(true);
-    }
-    //Are any of the attributes below zero?
-    else if (utils.attributesAreBelowZero(this.state.gameData.attributes)) {
-      //End the game with a loss
-      this.endGame(false);
-    }
-  }
-
-  endGame = (playerHasWon: boolean) => {
-    this.setState({
-      gameIsOver: true,
-      playerHasWon
-    });
-  };
-
-  setupState = () => {
+    //Setup State
     const gameData = Systems.DataStorage.get<IGameData>("GameData");
 
     const defaultGameState = {
@@ -75,6 +49,29 @@ class App extends React.Component<Props, GameState> {
         ...defaultGameState
       };
     }
+  }
+
+  componentDidUpdate() {
+    //Avoid infinite state updates if the game is over
+    if (this.state.gameIsOver) return;
+
+    //Have we reached the maximum number of turns?
+    if (this.state.gameData.turn > this.state.maxTurns) {
+      //End the game with a win
+      this.endGame(true);
+    }
+    //Are any of the attributes below zero?
+    else if (utils.attributesAreBelowZero(this.state.gameData.attributes)) {
+      //End the game with a loss
+      this.endGame(false);
+    }
+  }
+
+  endGame = (playerHasWon: boolean) => {
+    this.setState({
+      gameIsOver: true,
+      playerHasWon
+    });
   };
 
   startNewGame = () => {

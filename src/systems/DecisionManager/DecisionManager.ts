@@ -1,5 +1,5 @@
 import IDecisionManager from "./IDecisionManager";
-import { IDecision, PoliticalLeaning } from "../../interfaces/IDecision";
+import { IDecision, PoliticalLeaning, FinancialImpact, ForeignApproval } from "../../interfaces/IDecision";
 
 class DecisionManager implements IDecisionManager {
     numberOfDecisions: number;
@@ -9,54 +9,24 @@ class DecisionManager implements IDecisionManager {
         this.decisions = [
             {
                 name: "Decision 1",
-                description: "lorem ipsum dimsum",
+                description: "Fugiat eiusmod elit adipisicing magna occaecat sunt duis id aute. Qui adipisicing magna amet commodo do tempor consequat Lorem culpa in consequat ea. Deserunt laboris veniam mollit qui dolor Lorem dolore nisi adipisicing ullamco irure magna labore. Excepteur consequat minim mollit proident commodo labore ut occaecat tempor quis. Aliquip qui cillum enim exercitation elit ullamco elit. Nulla aliqua incididunt sint cillum culpa.",
                 politicalLeaning: PoliticalLeaning.Centre,
-                positiveModifiers: {
-                    domesticPoliticalFavour: 0,
-                    financial: 10,
-                    foreignPoliticalFavour: 0,
-                    populationHappiness: 5
-                },
-                negativeModifiers: {
-                    domesticPoliticalFavour: -5,
-                    financial: -90,
-                    foreignPoliticalFavour: 0,
-                    populationHappiness: 0
-                }
+                financialImpact: FinancialImpact.Medium,
+                foreignApproval: ForeignApproval.High
             },
             {
                 name: "Decision 2",
-                description: "lorem ipsum dimsum",
+                description: "Fugiat eiusmod elit adipisicing magna occaecat sunt duis id aute. Qui adipisicing magna amet commodo do tempor consequat Lorem culpa in consequat ea. Deserunt laboris veniam mollit qui dolor Lorem dolore nisi adipisicing ullamco irure magna labore. Excepteur consequat minim mollit proident commodo labore ut occaecat tempor quis. Aliquip qui cillum enim exercitation elit ullamco elit. Nulla aliqua incididunt sint cillum culpa.",
                 politicalLeaning: PoliticalLeaning.Right,
-                positiveModifiers: {
-                    domesticPoliticalFavour: 30,
-                    financial: 2,
-                    foreignPoliticalFavour: 0,
-                    populationHappiness: 0
-                },
-                negativeModifiers: {
-                    domesticPoliticalFavour: 0,
-                    financial: -5,
-                    foreignPoliticalFavour: -10,
-                    populationHappiness: -15
-                }
+                financialImpact: FinancialImpact.Low,
+                foreignApproval: ForeignApproval.Low
             },
             {
                 name: "Decision 3",
-                description: "lorem ipsum dimsum",
+                description: "Fugiat eiusmod elit adipisicing magna occaecat sunt duis id aute. Qui adipisicing magna amet commodo do tempor consequat Lorem culpa in consequat ea. Deserunt laboris veniam mollit qui dolor Lorem dolore nisi adipisicing ullamco irure magna labore. Excepteur consequat minim mollit proident commodo labore ut occaecat tempor quis. Aliquip qui cillum enim exercitation elit ullamco elit. Nulla aliqua incididunt sint cillum culpa.",
                 politicalLeaning: PoliticalLeaning.Left,
-                positiveModifiers: {
-                    domesticPoliticalFavour: 0,
-                    financial: 50,
-                    foreignPoliticalFavour: 0,
-                    populationHappiness: 20
-                },
-                negativeModifiers: {
-                    domesticPoliticalFavour: -25,
-                    financial: 0,
-                    foreignPoliticalFavour: -15,
-                    populationHappiness: 0
-                }
+                financialImpact: FinancialImpact.VeryHigh,
+                foreignApproval: ForeignApproval.Medium
             }
         ];
 

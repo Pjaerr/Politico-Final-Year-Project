@@ -1,5 +1,5 @@
 import React from "react";
-import ProgressBar from "./ProgressBar";
+import PercentageBar from "./PercentageBar";
 
 import styles from "./Attribute.module.scss";
 
@@ -15,7 +15,7 @@ const Attribute = ({ type, iconPath, percentage }: Props) => {
       <div className={styles.icon}>
         <img src={iconPath} alt={type} />
       </div>
-      <ProgressBar percentage={percentage} />
+      <PercentageBar percentage={percentage} />
     </div>
   );
 };
