@@ -36,10 +36,8 @@ const MapProvinceInfo = ({ province, onCloseFunc }: Props) => {
             </p>
             <p className={styles.politicalLeaning}>
               {province.name} leans{" "}
-              <span className={styles.left}>
-                {utils.getPoliticalLeaning(province)}
-              </span>{" "}
-              on the political spectrum
+              <span>{utils.getPoliticalLeaning(province)}</span> on the
+              political spectrum
             </p>
             {province.isInParty && (
               <p className={styles.isInParty}>

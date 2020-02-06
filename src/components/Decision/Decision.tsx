@@ -24,15 +24,17 @@ const Decision = ({ decision, onYes, onNo }: Props) => {
             <p>{decision.description}</p>
             <div className={styles.statistics}>
               <p className={styles.statistic}>
-                This decision is <span>{decision.politicalLeaning}</span>{" "}
-                Leaning
+                This decision is liked by the{" "}
+                <span>{decision.yes.politicalLeaning}</span> leaning citizens
+                and disliked by the <span>{decision.no.politicalLeaning}</span>{" "}
+                leaning citizens.
               </p>
               <p className={styles.statistic}>
-                This decision has a <span>{decision.financialImpact}</span>{" "}
+                This decision has a <span>{decision.yes.financialImpact}</span>{" "}
                 Financial Impact
               </p>
               <p className={styles.statistic}>
-                This decision has <span>{decision.foreignApproval}</span>{" "}
+                This decision has a <span>{decision.yes.foreignApproval}</span>{" "}
                 Foreign Approval
               </p>
             </div>

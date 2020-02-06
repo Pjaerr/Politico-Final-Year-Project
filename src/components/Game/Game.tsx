@@ -44,7 +44,7 @@ const Game = ({ gameData, nextTurn }: Props) => {
 
       {decisionIsActive && (
         <Decision
-          decision={Systems.DecisionManager.decisions[gameData.turn]}
+          decision={Systems.DecisionManager.getDecision()}
           onYes={() => {
             setDecisionIsActive(false);
             nextTurn({
