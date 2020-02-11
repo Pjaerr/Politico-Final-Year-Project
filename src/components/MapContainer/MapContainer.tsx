@@ -1,7 +1,7 @@
 import React from "react";
 
 //Components
-import PannableSVG from "../PannableSVG/PannableSVG";
+import PanAndZoomSVG from "../PanAndZoomSVG/PanAndZoomSVG";
 import MapProvince from "../MapProvince/MapProvince";
 
 //Styles
@@ -16,7 +16,7 @@ type Props = {
 
 const MapContainer = ({ onProvinceClick, provinces }: Props) => {
   return (
-    <PannableSVG zoomSpeed={1}>
+    <PanAndZoomSVG zoomSpeed={1}>
       <svg className={styles.container}>
         {provinces.map(province => (
           <MapProvince
@@ -29,7 +29,7 @@ const MapContainer = ({ onProvinceClick, provinces }: Props) => {
           />
         ))}
       </svg>
-    </PannableSVG>
+    </PanAndZoomSVG>
   );
 };
 
