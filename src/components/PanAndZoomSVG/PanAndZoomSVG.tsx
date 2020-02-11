@@ -70,6 +70,16 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         false
       );
 
+      /**
+       * ! For Pinch to Zoom
+       * https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Pinch_zoom_gestures
+       *
+       * Store events to keep track of multiple pointer events (ie two fingers being used)
+       * and then in the pointermove event, if two pointers are down calculate the distance between
+       * them both and if it has increased we zoom in and if it has decreased, we zoom out, taking our maxZoomDistance
+       * into account.
+       */
+
       //When the mouse is moved whilst the click is being held down
       //Set the distance to move to be the last known mouse position when it
       //was clicked and the current mouse position being moved.
@@ -78,6 +88,8 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         e => {
           if (isPanActive) {
             if (svgRef.current) {
+              // if (e.)
+
               SVGAttributes.position.x += e.movementX * -1;
               SVGAttributes.position.y += e.movementY * -1;
 
@@ -102,6 +114,7 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         false
       );
 
+      //TODO: Probably abstract this event into reusable function as scrolling is two seperate events for mouse/touch
       svgRef.current.addEventListener(
         "wheel",
         e => {
