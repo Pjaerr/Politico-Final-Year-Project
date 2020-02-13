@@ -52,11 +52,19 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         SVGAttributes.dimensions.height
       );
 
+      //Store pointer event when it occurs so we can check if multiple are down at once (multi-touch)
+
+      let pointerEvents: PointerEvent[] = [];
+      let previousDiffBetweenPointers = -1;
+
       //Register current mouse position when the map is clicked and enable dragging when mouse is moved
       svgRef.current.addEventListener(
         "pointerdown",
-        () => {
+        e => {
           isPanActive = true;
+
+          //Store pointer event
+          pointerEvents.push(e);
         },
         false
       );
@@ -64,8 +72,16 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
       //When the mouse is released, stop dragging.
       svgRef.current.addEventListener(
         "pointerup",
-        () => {
+        e => {
           isPanActive = false;
+
+          //Remove this pointer event from the array of pointer events if it exists
+          for (let i = 0; i < pointerEvents.length; i++) {
+            if (pointerEvents[i].pointerId === e.pointerId) {
+              pointerEvents.splice(i, 1);
+              break;
+            }
+          }
         },
         false
       );
@@ -88,11 +104,65 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         e => {
           if (isPanActive) {
             if (svgRef.current) {
-              // if (e.)
+              //If this event is already being accounted for but has changed
+              //Update its existing instance in the pointerEvents array
+              for (let i = 0; i < pointerEvents.length; i++) {
+                if (e.pointerId === pointerEvents[i].pointerId) {
+                  pointerEvents[i] = e;
+                  break;
+                }
+              }
 
+              //If two pointers are down, start checking for pinch to zoom
+              if (pointerEvents.length === 2) {
+                console.log("two fingers held down");
+                //Work out the difference between the two pointer events clientX values
+                let currentDiffBetweenPointers = Math.abs(
+                  pointerEvents[0].clientX - pointerEvents[1].clientX
+                );
+
+                if (previousDiffBetweenPointers > 0) {
+                  if (
+                    currentDiffBetweenPointers > previousDiffBetweenPointers
+                  ) {
+                    //Zoom in
+
+                    const newWidth =
+                      SVGAttributes.dimensions.width +
+                      currentDiffBetweenPointers * -0.5;
+
+                    const newHeight =
+                      SVGAttributes.dimensions.height +
+                      currentDiffBetweenPointers * -0.5;
+
+                    if (newWidth > 0 && newHeight > 0) {
+                      SVGAttributes.dimensions.width = newWidth;
+                      SVGAttributes.dimensions.height = newHeight;
+                    }
+                  }
+
+                  if (
+                    currentDiffBetweenPointers < previousDiffBetweenPointers
+                  ) {
+                    const newWidth =
+                      SVGAttributes.dimensions.width -
+                      currentDiffBetweenPointers * -0.5;
+
+                    const newHeight =
+                      SVGAttributes.dimensions.height -
+                      currentDiffBetweenPointers * -0.5;
+
+                    if (newWidth > 0 && newHeight) {
+                      SVGAttributes.dimensions.width = newWidth;
+                      SVGAttributes.dimensions.height = newHeight;
+                    }
+                  }
+                }
+
+                previousDiffBetweenPointers = currentDiffBetweenPointers;
+              }
               SVGAttributes.position.x += e.movementX * -1;
               SVGAttributes.position.y += e.movementY * -1;
-
               updateSVGViewBox(
                 SVGAttributes.position.x,
                 SVGAttributes.position.y,
@@ -108,8 +178,16 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
       //Stop panning the SVG if mouse has left the screen.
       svgRef.current.addEventListener(
         "pointerleave",
-        () => {
+        e => {
           isPanActive = false;
+
+          //Remove this pointer event from the array of pointer events if it exists
+          for (let i = 0; i < pointerEvents.length; i++) {
+            if (pointerEvents[i].pointerId === e.pointerId) {
+              pointerEvents.splice(i, 1);
+              break;
+            }
+          }
         },
         false
       );
