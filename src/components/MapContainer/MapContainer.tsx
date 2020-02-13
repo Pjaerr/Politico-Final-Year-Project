@@ -16,7 +16,7 @@ type Props = {
 
 const MapContainer = ({ onProvinceClick, provinces }: Props) => {
   return (
-    <PanAndZoomSVG zoomSpeed={1}>
+    <PanAndZoomSVG zoomSpeed={0.5}>
       <svg className={styles.container}>
         {provinces.map(province => (
           <MapProvince

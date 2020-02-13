@@ -52,12 +52,35 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         SVGAttributes.dimensions.height
       );
 
+      /* Stuff for Multi-Touch */
       //Store pointer event when it occurs so we can check if multiple are down at once (multi-touch)
-
       let pointerEvents: PointerEvent[] = [];
+
+      //The last stored distance between two pointers (fingers)
       let previousDiffBetweenPointers = -1;
 
-      //Register current mouse position when the map is clicked and enable dragging when mouse is moved
+      const removePointerEvent = (e: PointerEvent) => {
+        //Remove this pointer event from the array of pointer events if it exists
+        for (let i = 0; i < pointerEvents.length; i++) {
+          if (pointerEvents[i].pointerId === e.pointerId) {
+            pointerEvents.splice(i, 1);
+            break;
+          }
+        }
+      };
+
+      const updatePointerEvent = (e: PointerEvent) => {
+        //If this event is already being accounted for but has changed
+        //Update its existing instance in the pointerEvents array
+        for (let i = 0; i < pointerEvents.length; i++) {
+          if (e.pointerId === pointerEvents[i].pointerId) {
+            pointerEvents[i] = e;
+            break;
+          }
+        }
+      };
+
+      //Enable panning when the SVG is clicked/touched and add the pointer event to the array of pointer events
       svgRef.current.addEventListener(
         "pointerdown",
         e => {
@@ -69,32 +92,16 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         false
       );
 
-      //When the mouse is released, stop dragging.
+      //When the mouse/finger is released, disable panning and remove the pointer event from the array of pointer events
       svgRef.current.addEventListener(
         "pointerup",
         e => {
           isPanActive = false;
 
-          //Remove this pointer event from the array of pointer events if it exists
-          for (let i = 0; i < pointerEvents.length; i++) {
-            if (pointerEvents[i].pointerId === e.pointerId) {
-              pointerEvents.splice(i, 1);
-              break;
-            }
-          }
+          removePointerEvent(e);
         },
         false
       );
-
-      /**
-       * ! For Pinch to Zoom
-       * https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Pinch_zoom_gestures
-       *
-       * Store events to keep track of multiple pointer events (ie two fingers being used)
-       * and then in the pointermove event, if two pointers are down calculate the distance between
-       * them both and if it has increased we zoom in and if it has decreased, we zoom out, taking our maxZoomDistance
-       * into account.
-       */
 
       //When the mouse is moved whilst the click is being held down
       //Set the distance to move to be the last known mouse position when it
@@ -104,65 +111,64 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         e => {
           if (isPanActive) {
             if (svgRef.current) {
-              //If this event is already being accounted for but has changed
-              //Update its existing instance in the pointerEvents array
-              for (let i = 0; i < pointerEvents.length; i++) {
-                if (e.pointerId === pointerEvents[i].pointerId) {
-                  pointerEvents[i] = e;
-                  break;
-                }
-              }
+              updatePointerEvent(e);
 
               //If two pointers are down, start checking for pinch to zoom
               if (pointerEvents.length === 2) {
-                console.log("two fingers held down");
-                //Work out the difference between the two pointer events clientX values
+                //Work out the difference between the two pointer events clientX values (space between the fingers)
                 let currentDiffBetweenPointers = Math.abs(
                   pointerEvents[0].clientX - pointerEvents[1].clientX
                 );
 
+                //If we've tracked a pinch previously
                 if (previousDiffBetweenPointers > 0) {
+                  let direction = 0;
+
+                  //We're pinching outwards
                   if (
                     currentDiffBetweenPointers > previousDiffBetweenPointers
                   ) {
-                    //Zoom in
-
-                    const newWidth =
-                      SVGAttributes.dimensions.width +
-                      currentDiffBetweenPointers * -0.5;
-
-                    const newHeight =
-                      SVGAttributes.dimensions.height +
-                      currentDiffBetweenPointers * -0.5;
-
-                    if (newWidth > 0 && newHeight > 0) {
-                      SVGAttributes.dimensions.width = newWidth;
-                      SVGAttributes.dimensions.height = newHeight;
-                    }
+                    direction = -1;
                   }
 
+                  //We're pinching inwards
                   if (
                     currentDiffBetweenPointers < previousDiffBetweenPointers
                   ) {
+                    direction = 1;
+                  }
+
+                  //If there has been a change in the pinching direction (ie. the fingers aren't sitting still)
+                  if (direction !== 0) {
                     const newWidth =
-                      SVGAttributes.dimensions.width -
-                      currentDiffBetweenPointers * -0.5;
+                      SVGAttributes.dimensions.width +
+                      currentDiffBetweenPointers * zoomSpeed * direction;
 
                     const newHeight =
-                      SVGAttributes.dimensions.height -
-                      currentDiffBetweenPointers * -0.5;
+                      SVGAttributes.dimensions.height +
+                      currentDiffBetweenPointers * zoomSpeed * direction;
 
-                    if (newWidth > 0 && newHeight) {
+                    //If the new dimensions wouldn't result in negative SVG viewBox values
+                    if (
+                      newWidth > 0 &&
+                      newHeight > 0 &&
+                      newWidth < maxZoomDistance &&
+                      newHeight < maxZoomDistance
+                    ) {
                       SVGAttributes.dimensions.width = newWidth;
                       SVGAttributes.dimensions.height = newHeight;
                     }
                   }
                 }
 
+                //Store the previous distance between the fingers so we can calculate the change
                 previousDiffBetweenPointers = currentDiffBetweenPointers;
+              } else {
+                //Only 1 pointer/finger is down, just pan as usual.
+                SVGAttributes.position.x += e.movementX * -1;
+                SVGAttributes.position.y += e.movementY * -1;
               }
-              SVGAttributes.position.x += e.movementX * -1;
-              SVGAttributes.position.y += e.movementY * -1;
+
               updateSVGViewBox(
                 SVGAttributes.position.x,
                 SVGAttributes.position.y,
@@ -192,7 +198,6 @@ const PanAndZoomSVG: FunctionComponent<Props> = ({
         false
       );
 
-      //TODO: Probably abstract this event into reusable function as scrolling is two seperate events for mouse/touch
       svgRef.current.addEventListener(
         "wheel",
         e => {
