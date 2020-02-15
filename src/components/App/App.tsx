@@ -30,7 +30,7 @@ class App extends React.Component<Props, GameState> {
     const defaultGameState = {
       maxTurns: Systems.DecisionManager.numberOfDecisions,
       hasExistingSave: gameData ? true : false,
-      gameStarted: false,
+      gameStarted: true,
       gameIsOver: false,
       playerHasWon: false
     };

@@ -11,17 +11,19 @@ export enum PoliticalLeaning {
 }
 
 export enum FinancialImpact {
-    Low = "Low",
-    Medium = "Medium",
-    High = "High",
-    VeryHigh = "Very High"
+    VeryNegative = "Very Negative",
+    Negative = "Negative",
+    Neutral = "Neutral",
+    Positive = "Positive",
+    VeryPositive = "Very Positive"
 }
 
 export enum ForeignApproval {
-    Low = "Low",
-    Medium = "Medium",
-    High = "High",
-    VeryHigh = "Very High"
+    VeryNegative = "Very Negative",
+    Negative = "Negative",
+    Neutral = "Neutral",
+    Positive = "Positive",
+    VeryPositive = "Very Positive"
 }
 
 /*The Political Leaning, Financial Impact and Foreign Approval factors will be 
@@ -29,7 +31,14 @@ manually determined based on the decision content*/
 export interface IDecision {
     name: string;
     description: string;
-    politicalLeaning: PoliticalLeaning;
-    financialImpact: FinancialImpact;
-    foreignApproval: ForeignApproval;
+    yes: {
+        politicalLeaning: PoliticalLeaning;
+        financialImpact: FinancialImpact;
+        foreignApproval: ForeignApproval;
+    },
+    no: {
+        politicalLeaning: PoliticalLeaning;
+        financialImpact: FinancialImpact;
+        foreignApproval: ForeignApproval;
+    }
 }

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 //Components
+import PanAndZoomSVG from "../PanAndZoomSVG/PanAndZoomSVG";
 import MapProvince from "../MapProvince/MapProvince";
 
 //Styles
@@ -14,36 +15,21 @@ type Props = {
 };
 
 const MapContainer = ({ onProvinceClick, provinces }: Props) => {
-  const svgRef = React.createRef<SVGSVGElement>();
-
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (svgRef.current) {
-      const svgBoundingBox = svgRef.current.getBBox();
-      setWidth(svgBoundingBox.x + svgBoundingBox.width + svgBoundingBox.x);
-      setHeight(svgBoundingBox.y + svgBoundingBox.height + svgBoundingBox.y);
-    }
-  }, [svgRef]);
-
   return (
-    <svg
-      className={styles.container}
-      ref={svgRef}
-      viewBox={`0 0 ${width} ${height}`}
-    >
-      {provinces.map(province => (
-        <MapProvince
-          key={province.name}
-          province={province}
-          svgPath={getProvinceSVGPath(province.name)}
-          onClick={() => {
-            onProvinceClick(province.name);
-          }}
-        />
-      ))}
-    </svg>
+    <PanAndZoomSVG zoomSpeed={0.5}>
+      <svg className={styles.container}>
+        {provinces.map(province => (
+          <MapProvince
+            key={province.name}
+            province={province}
+            svgPath={getProvinceSVGPath(province.name)}
+            onClick={() => {
+              onProvinceClick(province.name);
+            }}
+          />
+        ))}
+      </svg>
+    </PanAndZoomSVG>
   );
 };
 
