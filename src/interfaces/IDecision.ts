@@ -26,6 +26,12 @@ export enum ForeignApproval {
     VeryPositive = "Very Positive"
 }
 
+export type DecisionConsequences = {
+    politicalLeaning: PoliticalLeaning;
+    financialImpact: FinancialImpact;
+    foreignApproval: ForeignApproval;
+}
+
 /*The Political Leaning, Financial Impact and Foreign Approval factors will be 
 manually determined based on the decision content*/
 export interface IDecision {

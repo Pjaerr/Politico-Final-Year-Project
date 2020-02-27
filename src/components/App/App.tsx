@@ -17,6 +17,7 @@ import StartScreen from "../StartScreen/StartScreen";
 
 //Utils
 import * as utils from "../../utils/utils";
+import { DecisionConsequences } from "../../interfaces/IDecision";
 
 type Props = {};
 
@@ -100,31 +101,20 @@ class App extends React.Component<Props, GameState> {
     });
   };
 
-  nextTurn = (
-    attributeAdjustments: IAttributes = {
-      financial: 0,
-      populationHappiness: 0,
-      domesticPoliticalFavour: 0,
-      foreignPoliticalFavour: 0
-    }
-  ) => {
+  nextTurn = (consequences: DecisionConsequences) => {
+    //Use the consequences here to adjust overall attributes
+    //Directly affect the financial and foreignPoliticalFavour attributes
+    //but use the consequences.politicalLeaning in combination with the political leaning
+    //of all of the provinces to determine the affect on populationHappiness and then use
+    //a subset of them (based on province.isInParty) to determine domesticPoliticalFavour
+
+    //Once code is written in here, probably extract out into some other place, maybe a system?
+
+    //And then set the state with the new values
+
     this.setState(prevState => {
       const newGameState = {
         ...prevState.gameData,
-        attributes: {
-          financial:
-            prevState.gameData.attributes.financial +
-            attributeAdjustments.financial,
-          populationHappiness:
-            prevState.gameData.attributes.populationHappiness +
-            attributeAdjustments.populationHappiness,
-          domesticPoliticalFavour:
-            prevState.gameData.attributes.domesticPoliticalFavour +
-            attributeAdjustments.domesticPoliticalFavour,
-          foreignPoliticalFavour:
-            prevState.gameData.attributes.foreignPoliticalFavour +
-            attributeAdjustments.foreignPoliticalFavour
-        },
         turn: prevState.gameData.turn + 1
       };
 
