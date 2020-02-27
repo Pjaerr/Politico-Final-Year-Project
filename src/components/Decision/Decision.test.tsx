@@ -19,7 +19,7 @@ test("Calls onYes() prop when the yes button is clicked", () => {
     />
   );
 
-  const yesButton = screen.getByText(/Yes/i);
+  const yesButton = screen.getByText(/Yes/i, { selector: "button" });
   fireEvent.click(yesButton);
 
   expect(count).toBe(10);
@@ -40,7 +40,7 @@ test("Calls onNo() prop when the no button is clicked", () => {
     />
   );
 
-  const noButton = screen.getByText(/No/i);
+  const noButton = screen.getByText(/No/i, { selector: "button" });
   fireEvent.click(noButton);
 
   expect(count).toBe(10);

@@ -20,16 +20,16 @@ test("Shows an unordered list containing list of attributes passed in via the st
     />
   );
 
-  const financialAttribute = screen.getByText(
+  const financialAttribute = screen.queryByText(
     (_, e) => e.textContent === "Financial: 100"
   );
-  const populationHappiness = screen.getByText(
+  const populationHappiness = screen.queryByText(
     (_, e) => e.textContent === "Population Happiness: 20"
   );
-  const domesticPolFavour = screen.getByText(
+  const domesticPolFavour = screen.queryByText(
     (_, e) => e.textContent === "Domestic Political Favour: 100"
   );
-  const foreignPolFavour = screen.getByText(
+  const foreignPolFavour = screen.queryByText(
     (_, e) => e.textContent === "Foreign Political Favour: 100"
   );
 
@@ -60,7 +60,7 @@ test("Calls exitFunc() prop when the exit button is clicked", () => {
     />
   );
 
-  const exitButton = screen.getByText(/Exit/i);
+  const exitButton = screen.getByText(/Exit/i, { selector: "button" });
   fireEvent.click(exitButton);
 
   expect(count).toBe(10);

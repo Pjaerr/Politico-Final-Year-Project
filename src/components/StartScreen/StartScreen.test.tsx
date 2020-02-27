@@ -12,7 +12,9 @@ test("Shows a continue button when passing a showContinueButton prop of true", (
     />
   );
 
-  const continueButton = screen.queryByText(/Continue/i);
+  const continueButton = screen.queryByText(/Continue/i, {
+    selector: "button"
+  });
   expect(continueButton).toBeDefined();
   expect(continueButton).toBeInTheDocument();
 });
@@ -26,7 +28,9 @@ test("Doesn't show a continue button when passing a showContinueButton prop of f
     />
   );
 
-  const continueButton = screen.queryByText(/Continue/i);
+  const continueButton = screen.queryByText(/Continue/i, {
+    selector: "button"
+  });
   expect(continueButton).toBeNull();
 });
 
@@ -41,7 +45,7 @@ test("Calls startFunc() prop when the new game button is clicked", () => {
     />
   );
 
-  const newGameButton = screen.getByText(/New Game/i);
+  const newGameButton = screen.getByText(/New Game/i, { selector: "button" });
   fireEvent.click(newGameButton);
 
   expect(count).toBe(10);
@@ -60,7 +64,7 @@ test("Calls continueFunc() prop when the continue button is clicked", () => {
     />
   );
 
-  const continueButton = screen.getByText(/Continue/i);
+  const continueButton = screen.getByText(/Continue/i, { selector: "button" });
   fireEvent.click(continueButton);
 
   expect(count).toBe(10);
