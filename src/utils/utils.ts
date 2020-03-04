@@ -24,18 +24,16 @@ export const attributesAreBelowZero = ({
 }
 
 export const getPoliticalLeaning = (province: IProvince): PoliticalLeaning => {
-    //Do some calculations here using fuzzy logic that use the factors of a given
-    //province to work out a political leaning for said province.
+    //Here we would take the province's factors into account and 
+    //feed them into a Fuzzy Inference System that determines the
+    //political leaning. For now it is just chosen randomly for
+    //testing until a relevant FIS is in place.
 
     const politicalLeaningAsString = ["Hard Left", "Left", "Centre-Left", "Centre", "Centre-Right",
         "Right",
         "Hard-Right"]
 
     return (politicalLeaningAsString[Math.floor(Math.random() * Math.floor(politicalLeaningAsString.length))]) as PoliticalLeaning;
-}
-
-export const getPoliticalLeaningAsString = (province: IProvince): string => {
-    return "Left";
 }
 
 export const randomNumber = (min: number, max: number): number => {

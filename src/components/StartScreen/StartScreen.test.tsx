@@ -1,58 +1,71 @@
+import "@testing-library/jest-dom";
 import React from "react";
-import { mount } from "enzyme";
-
+import { render, fireEvent, screen } from "@testing-library/react";
 import StartScreen from "./StartScreen";
 
-describe("Creating a <StartScreen/> component and passing it a showContinueButton prop of true", () => {
-  it("should render a container with two <button> elements", () => {
-    const wrapper = mount(
-      <StartScreen
-        showContinueButton={true}
-        continueFunc={() => {}}
-        startFunc={() => {}}
-      />
-    );
+test("Shows a continue button when passing a showContinueButton prop of true", () => {
+  render(
+    <StartScreen
+      continueFunc={() => {}}
+      startFunc={() => {}}
+      showContinueButton={true}
+    />
+  );
 
-    expect(wrapper.find("button").length).toEqual(2);
-
-    wrapper.unmount();
+  const continueButton = screen.queryByText(/Continue/i, {
+    selector: "button"
   });
+  expect(continueButton).toBeDefined();
+  expect(continueButton).toBeInTheDocument();
 });
 
-describe("Creating a <StartScreen/> component and passing it a showContinueButton prop of false", () => {
-  it("should render a container with a single <button> element", () => {
-    const wrapper = mount(
-      <StartScreen
-        showContinueButton={false}
-        continueFunc={() => {}}
-        startFunc={() => {}}
-      />
-    );
+test("Doesn't show a continue button when passing a showContinueButton prop of false", () => {
+  render(
+    <StartScreen
+      continueFunc={() => {}}
+      startFunc={() => {}}
+      showContinueButton={false}
+    />
+  );
 
-    expect(wrapper.find("button").length).toEqual(1);
-
-    wrapper.unmount();
+  const continueButton = screen.queryByText(/Continue/i, {
+    selector: "button"
   });
+  expect(continueButton).toBeNull();
 });
 
-describe("Creating a <StartScreen/> component, passing it a startFunc function", () => {
-  it("should call the startFunc function when the start button is clicked", () => {
-    let value = 5;
+test("Calls startFunc() prop when the new game button is clicked", () => {
+  let count = 5;
 
-    const wrapper = mount(
-      <StartScreen
-        showContinueButton={false}
-        continueFunc={() => {}}
-        startFunc={() => {
-          value += 10;
-        }}
-      />
-    );
+  render(
+    <StartScreen
+      continueFunc={() => {}}
+      startFunc={() => (count += 5)}
+      showContinueButton={false}
+    />
+  );
 
-    wrapper.find("button").simulate("click");
+  const newGameButton = screen.getByText(/New Game/i, { selector: "button" });
+  fireEvent.click(newGameButton);
 
-    expect(value).toEqual(15);
+  expect(count).toBe(10);
+});
 
-    wrapper.unmount();
-  });
+test("Calls continueFunc() prop when the continue button is clicked", () => {
+  let count = 5;
+
+  render(
+    <StartScreen
+      continueFunc={() => {
+        count += 5;
+      }}
+      startFunc={() => {}}
+      showContinueButton={true}
+    />
+  );
+
+  const continueButton = screen.getByText(/Continue/i, { selector: "button" });
+  fireEvent.click(continueButton);
+
+  expect(count).toBe(10);
 });

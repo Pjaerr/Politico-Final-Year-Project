@@ -11,12 +11,12 @@ import GameState from "../../types/GameState";
 
 //Systems
 import Systems from "../../systems/Systems";
-import IAttributes from "../../interfaces/IAttributes";
 import EndScreen from "../EndScreen/EndScreen";
 import StartScreen from "../StartScreen/StartScreen";
 
 //Utils
 import * as utils from "../../utils/utils";
+import { DecisionConsequences } from "../../interfaces/IDecision";
 
 type Props = {};
 
@@ -30,7 +30,7 @@ class App extends React.Component<Props, GameState> {
     const defaultGameState = {
       maxTurns: Systems.DecisionManager.numberOfDecisions,
       hasExistingSave: gameData ? true : false,
-      gameStarted: true,
+      gameStarted: false,
       gameIsOver: false,
       playerHasWon: false
     };
@@ -100,31 +100,13 @@ class App extends React.Component<Props, GameState> {
     });
   };
 
-  nextTurn = (
-    attributeAdjustments: IAttributes = {
-      financial: 0,
-      populationHappiness: 0,
-      domesticPoliticalFavour: 0,
-      foreignPoliticalFavour: 0
-    }
-  ) => {
+  nextTurn = (consequences: DecisionConsequences) => {
     this.setState(prevState => {
       const newGameState = {
-        ...prevState.gameData,
-        attributes: {
-          financial:
-            prevState.gameData.attributes.financial +
-            attributeAdjustments.financial,
-          populationHappiness:
-            prevState.gameData.attributes.populationHappiness +
-            attributeAdjustments.populationHappiness,
-          domesticPoliticalFavour:
-            prevState.gameData.attributes.domesticPoliticalFavour +
-            attributeAdjustments.domesticPoliticalFavour,
-          foreignPoliticalFavour:
-            prevState.gameData.attributes.foreignPoliticalFavour +
-            attributeAdjustments.foreignPoliticalFavour
-        },
+        ...Systems.GameDataManager.updateGameData(
+          prevState.gameData,
+          consequences
+        ),
         turn: prevState.gameData.turn + 1
       };
 

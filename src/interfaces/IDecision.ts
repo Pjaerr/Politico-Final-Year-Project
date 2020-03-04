@@ -1,5 +1,3 @@
-import IAttributes from './IAttributes'
-
 export enum PoliticalLeaning {
     HardLeft = "Hard Left",
     Left = "Left",
@@ -24,6 +22,12 @@ export enum ForeignApproval {
     Neutral = "Neutral",
     Positive = "Positive",
     VeryPositive = "Very Positive"
+}
+
+export type DecisionConsequences = {
+    politicalLeaning: PoliticalLeaning;
+    financialImpact: FinancialImpact;
+    foreignApproval: ForeignApproval;
 }
 
 /*The Political Leaning, Financial Impact and Foreign Approval factors will be 

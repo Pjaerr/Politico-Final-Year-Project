@@ -1,3 +1,5 @@
+import { PoliticalLeaning } from "./IDecision";
+
 interface IProvincePoliticalLeaningFactors {
   populationDensity: number;
   nonWhiteBritishEthnicPercentage: number;
@@ -10,6 +12,7 @@ interface IProvince {
   population: number;
   happiness: number;
   isInParty: boolean;
+  politicalLeaning: PoliticalLeaning;
   factors: IProvincePoliticalLeaningFactors;
 }
 

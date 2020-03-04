@@ -24,7 +24,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "set CI=true && npm test"
+      "pre-push": "set CI=true && npm test"
     }
   },
   "eslintConfig": {
@@ -43,6 +43,8 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^9.4.1",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^24.0.20",
     "enzyme-adapter-react-16": "^1.15.1",

@@ -1,72 +1,67 @@
+import "@testing-library/jest-dom";
 import React from "react";
-import { mount } from "enzyme";
-
+import { render, fireEvent, screen } from "@testing-library/react";
 import EndScreen from "./EndScreen";
 
-describe("Creating an <EndScreen/> component and passing it a statistics prop", () => {
-  it("should render a an unordered list with the attributes passed to it", () => {
-    const wrapper = mount(
-      <EndScreen
-        playerHasWon={true}
-        exitFunc={() => {}}
-        statistics={{
-          numberOfDecisions: 10,
-          attributes: {
-            financial: 100,
-            populationHappiness: 20,
-            domesticPoliticalFavour: 100,
-            foreignPoliticalFavour: 100
-          }
-        }}
-      />
-    );
+test("Shows an unordered list containing list of attributes passed in via the statistics prop", () => {
+  render(
+    <EndScreen
+      playerHasWon={true}
+      exitFunc={() => {}}
+      statistics={{
+        numberOfDecisions: 10,
+        attributes: {
+          financial: 100,
+          populationHappiness: 20,
+          domesticPoliticalFavour: 100,
+          foreignPoliticalFavour: 100
+        }
+      }}
+    />
+  );
 
-    expect(wrapper.find(".financialAttribute").html()).toBe(
-      '<li class="financialAttribute"><b>Financial</b>: 100</li>'
-    );
+  const financialAttribute = screen.queryByText(
+    (_, e) => e.textContent === "Financial: 100"
+  );
+  const populationHappiness = screen.queryByText(
+    (_, e) => e.textContent === "Population Happiness: 20"
+  );
+  const domesticPolFavour = screen.queryByText(
+    (_, e) => e.textContent === "Domestic Political Favour: 100"
+  );
+  const foreignPolFavour = screen.queryByText(
+    (_, e) => e.textContent === "Foreign Political Favour: 100"
+  );
 
-    expect(wrapper.find(".populationHappinessAttribute").html()).toBe(
-      '<li class="populationHappinessAttribute"><b>Population Happiness</b>: 20</li>'
-    );
-
-    expect(wrapper.find(".domesticPoliticalFavourAttribute").html()).toBe(
-      '<li class="domesticPoliticalFavourAttribute"><b>Domestic Political Favour</b>: 100</li>'
-    );
-
-    expect(wrapper.find(".foreignPoliticalFavourAttribute").html()).toBe(
-      '<li class="foreignPoliticalFavourAttribute"><b>Foreign Political Favour</b>: 100</li>'
-    );
-
-    wrapper.unmount();
-  });
+  expect(financialAttribute).toBeInTheDocument();
+  expect(populationHappiness).toBeInTheDocument();
+  expect(domesticPolFavour).toBeInTheDocument();
+  expect(foreignPolFavour).toBeInTheDocument();
 });
 
-describe("Creating an <EndScreen/> component and passing it an exitFunc function", () => {
-  it("should call the function we passed when the exit button is clicked", () => {
-    let value = 10;
+test("Calls exitFunc() prop when the exit button is clicked", () => {
+  let count = 5;
 
-    const wrapper = mount(
-      <EndScreen
-        playerHasWon={true}
-        exitFunc={() => {
-          value += 5;
-        }}
-        statistics={{
-          numberOfDecisions: 10,
-          attributes: {
-            financial: 100,
-            populationHappiness: 100,
-            domesticPoliticalFavour: 100,
-            foreignPoliticalFavour: 100
-          }
-        }}
-      />
-    );
+  render(
+    <EndScreen
+      playerHasWon={true}
+      statistics={{
+        numberOfDecisions: 0,
+        attributes: {
+          financial: 0,
+          populationHappiness: 0,
+          domesticPoliticalFavour: 0,
+          foreignPoliticalFavour: 0
+        }
+      }}
+      exitFunc={() => {
+        count += 5;
+      }}
+    />
+  );
 
-    wrapper.find("button").simulate("click");
+  const exitButton = screen.getByText(/Exit/i, { selector: "button" });
+  fireEvent.click(exitButton);
 
-    expect(value).toEqual(15);
-
-    wrapper.unmount();
-  });
+  expect(count).toBe(10);
 });

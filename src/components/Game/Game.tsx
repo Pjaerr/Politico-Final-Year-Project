@@ -15,16 +15,21 @@ import IGameData from "../../interfaces/IGameData";
 import IProvince from "../../interfaces/IProvince";
 import Systems from "../../systems/Systems";
 import IAttributes from "../../interfaces/IAttributes";
+import { IDecision, DecisionConsequences } from "../../interfaces/IDecision";
+import { getPoliticalLeaning } from "../../utils/utils";
 
 type Props = {
   gameData: IGameData;
-  nextTurn: (attributeAdjustments: IAttributes) => void;
+  nextTurn: (consequences: DecisionConsequences) => void;
 };
 
 const Game = ({ gameData, nextTurn }: Props) => {
   const [activeProvince, setActiveProvince] = useState<IProvince>();
+  const [activeDecision, setActiveDecision] = useState<IDecision>();
   const [decisionIsActive, setDecisionIsActive] = useState<boolean>(false);
   const [provinceIsActive, setProvinceIsActive] = useState<boolean>(false);
+
+  gameData.provinces.forEach(province => getPoliticalLeaning(province));
 
   return (
     <div className={styles.container}>
@@ -42,26 +47,16 @@ const Game = ({ gameData, nextTurn }: Props) => {
         }}
       />
 
-      {decisionIsActive && (
+      {decisionIsActive && activeDecision && (
         <Decision
-          decision={Systems.DecisionManager.getDecision()}
+          decision={activeDecision}
           onYes={() => {
             setDecisionIsActive(false);
-            nextTurn({
-              domesticPoliticalFavour: 0,
-              financial: 0,
-              foreignPoliticalFavour: 0,
-              populationHappiness: 0
-            });
+            nextTurn(activeDecision.yes);
           }}
           onNo={() => {
             setDecisionIsActive(false);
-            nextTurn({
-              domesticPoliticalFavour: 0,
-              financial: 0,
-              foreignPoliticalFavour: 0,
-              populationHappiness: 0
-            });
+            nextTurn(activeDecision.no);
           }}
         />
       )}
@@ -77,7 +72,10 @@ const Game = ({ gameData, nextTurn }: Props) => {
 
       <TurnCounter
         currentTurn={gameData.turn}
-        onNextTurnClick={() => setDecisionIsActive(true)}
+        onNextTurnClick={() => {
+          setActiveDecision(Systems.DecisionManager.getDecision());
+          setDecisionIsActive(true);
+        }}
       />
     </div>
   );
