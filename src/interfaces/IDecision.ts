@@ -1,5 +1,3 @@
-import IAttributes from './IAttributes'
-
 export enum PoliticalLeaning {
     HardLeft = "Hard Left",
     Left = "Left",

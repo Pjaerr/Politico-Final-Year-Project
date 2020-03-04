@@ -11,7 +11,6 @@ import GameState from "../../types/GameState";
 
 //Systems
 import Systems from "../../systems/Systems";
-import IAttributes from "../../interfaces/IAttributes";
 import EndScreen from "../EndScreen/EndScreen";
 import StartScreen from "../StartScreen/StartScreen";
 
@@ -31,7 +30,7 @@ class App extends React.Component<Props, GameState> {
     const defaultGameState = {
       maxTurns: Systems.DecisionManager.numberOfDecisions,
       hasExistingSave: gameData ? true : false,
-      gameStarted: true,
+      gameStarted: false,
       gameIsOver: false,
       playerHasWon: false
     };
@@ -102,19 +101,12 @@ class App extends React.Component<Props, GameState> {
   };
 
   nextTurn = (consequences: DecisionConsequences) => {
-    //Use the consequences here to adjust overall attributes
-    //Directly affect the financial and foreignPoliticalFavour attributes
-    //but use the consequences.politicalLeaning in combination with the political leaning
-    //of all of the provinces to determine the affect on populationHappiness and then use
-    //a subset of them (based on province.isInParty) to determine domesticPoliticalFavour
-
-    //Once code is written in here, probably extract out into some other place, maybe a system?
-
-    //And then set the state with the new values
-
     this.setState(prevState => {
       const newGameState = {
-        ...prevState.gameData,
+        ...Systems.GameDataManager.updateGameData(
+          prevState.gameData,
+          consequences
+        ),
         turn: prevState.gameData.turn + 1
       };
 
