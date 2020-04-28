@@ -48,6 +48,59 @@ averageSalary = {
     veryHigh: Fuzzyfic::Gaussian.new([averageSalaryMin, averageSalaryMax], 100000, 55000),
 }
 
+politicalLeaningMin = 0
+politicalLeaningMax = 100
+politicalLeaning = {
+    hardLeft: Fuzzyfic::Gaussian.new([politicalLeaningMin, politicalLeaningMax], 0, 10),
+    left: Fuzzyfic::Gaussian.new([politicalLeaningMin, politicalLeaningMax], 20, 8),
+    centreLeft: Fuzzyfic::Gaussian.new([politicalLeaningMin, politicalLeaningMax], 40, 8),
+    centre: Fuzzyfic::Triangle.new([40, 60], 50),
+    centreRight: Fuzzyfic::Gaussian.new([politicalLeaningMin, politicalLeaningMax], 60, 8),
+    right: Fuzzyfic::Gaussian.new([politicalLeaningMin, politicalLeaningMax], 80, 8),
+    hardRight: Fuzzyfic::Gaussian.new([politicalLeaningMin, politicalLeaningMax], 100, 10)
+}
+
+rules = []
+
+# Hard Left Rules
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:medium]).and(numberOfUniversities[:medium]).and(averageSalary[:high]).then politicalLeaning[:hardLeft]
+
+# Left Rules
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:high]).and(averageSalary[:medium]).then politicalLeaning[:left]
+
+rules.push populationDensity[:high].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:low]).and(averageSalary[:medium]).then politicalLeaning[:left]
+
+rules.push populationDensity[:high].and(nonWhiteBritishEthnicPercentage[:medium]).and(numberOfUniversities[:low]).and(averageSalary[:medium]).then politicalLeaning[:left]
+
+# Centre-Left Rules
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:medium]).and(numberOfUniversities[:low]).and(averageSalary[:veryHigh]).then politicalLeaning[:centreLeft]
+
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:high]).and(numberOfUniversities[:low]).and(averageSalary[:medium]).then politicalLeaning[:centreLeft]
+
+rules.push populationDensity[:high].and(nonWhiteBritishEthnicPercentage[:medium]).and(numberOfUniversities[:medium]).and(averageSalary[:medium]).then politicalLeaning[:centreLeft]
+
+# Centre Rules
+rules.push populationDensity[:veryHigh].and(nonWhiteBritishEthnicPercentage[:high]).and(numberOfUniversities[:veryHigh]).and(averageSalary[:veryHigh]).then politicalLeaning[:centre]
+
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:low]).and(averageSalary[:medium]).then politicalLeaning[:centre]
+
+# Centre-Right Rules
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:medium]).and(numberOfUniversities[:low]).and(averageSalary[:high]).then politicalLeaning[:centreRight]
+
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:high]).and(numberOfUniversities[:low]).and(averageSalary[:high]).then politicalLeaning[:centreRight]
+
+rules.push populationDensity[:low].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:medium]).and(averageSalary[:medium]).then politicalLeaning[:centreRight]
+
+# Right Rules
+rules.push populationDensity[:medium].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:low]).and(averageSalary[:high]).then politicalLeaning[:right]
+
+rules.push populationDensity[:veryLow].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:low]).and(averageSalary[:medium]).then politicalLeaning[:right]
+
+rules.push populationDensity[:low].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:low]).and(averageSalary[:medium]).then politicalLeaning[:right]
+
+# Hard-Right Rules
+rules.push populationDensity[:low].and(nonWhiteBritishEthnicPercentage[:low]).and(numberOfUniversities[:low]).and(averageSalary[:high]).then politicalLeaning[:hardRight]
+
 
 #Define API response structure
 def API_RESPONSE(status, body)
