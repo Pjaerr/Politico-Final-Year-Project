@@ -18,3 +18,5 @@ C:\Users\Josh\University\politico-fyp\Backend\obj\Debug\netcoreapp3.1\staticweba
 C:\Users\Josh\University\politico-fyp\Backend\obj\Debug\netcoreapp3.1\Backend.dll
 C:\Users\Josh\University\politico-fyp\Backend\obj\Debug\netcoreapp3.1\Backend.pdb
 C:\Users\Josh\University\politico-fyp\Backend\obj\Debug\netcoreapp3.1\Backend.genruntimeconfig.cache
+C:\Users\Josh\University\politico-fyp\Backend\bin\Debug\netcoreapp3.1\FLS.dll
+C:\Users\Josh\University\politico-fyp\Backend\obj\Debug\netcoreapp3.1\Backend.csproj.CopyComplete
