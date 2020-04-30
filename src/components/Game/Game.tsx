@@ -29,8 +29,6 @@ const Game = ({ gameData, nextTurn }: Props) => {
   const [decisionIsActive, setDecisionIsActive] = useState<boolean>(false);
   const [provinceIsActive, setProvinceIsActive] = useState<boolean>(false);
 
-  gameData.provinces.forEach(province => getPoliticalLeaning(province));
-
   return (
     <div className={styles.container}>
       <Attributes attributes={gameData.attributes} />
@@ -39,7 +37,7 @@ const Game = ({ gameData, nextTurn }: Props) => {
         onProvinceClick={(provinceName: string) => {
           setActiveProvince(
             gameData.provinces.filter(
-              province => province.name === provinceName
+              (province) => province.name === provinceName
             )[0]
           );
 

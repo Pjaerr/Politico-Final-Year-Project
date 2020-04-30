@@ -4,8 +4,7 @@ namespace Backend
 {
     public class HTTPResponse
     {
-        public int status {get; set;}
-
-        public string body {get; set;}
+        public double fuzzifiedOutput {get; set;}
+        public string defuzzifiedOutput {get; set;}
     }
 }

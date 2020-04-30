@@ -12,7 +12,7 @@ interface IProvince {
   population: number;
   happiness: number;
   isInParty: boolean;
-  politicalLeaning: PoliticalLeaning;
+  politicalLeaning: number;
   factors: IProvincePoliticalLeaningFactors;
 }
 
