@@ -12,7 +12,7 @@ const TurnCounter = ({ currentTurn, onNextTurnClick }: Props) => {
     <div className={styles.container}>
       <div className={styles.turnCount}>Current Turn: {currentTurn}</div>
       <button className={styles.button} onClick={onNextTurnClick}>
-        Next Turn
+        Make a Decision
       </button>
     </div>
   );

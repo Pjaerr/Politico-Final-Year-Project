@@ -51,11 +51,14 @@ const Game = ({ gameData, nextTurn }: Props) => {
           onYes={() => {
             setDecisionIsActive(false);
             nextTurn(activeDecision.yes);
+            setActiveDecision(undefined);
           }}
           onNo={() => {
             setDecisionIsActive(false);
             nextTurn(activeDecision.no);
+            setActiveDecision(undefined);
           }}
+          onClose={() => setDecisionIsActive(false)}
         />
       )}
 
@@ -71,7 +74,9 @@ const Game = ({ gameData, nextTurn }: Props) => {
       <TurnCounter
         currentTurn={gameData.turn}
         onNextTurnClick={() => {
-          setActiveDecision(Systems.DecisionManager.getDecision());
+          if (activeDecision === undefined) {
+            setActiveDecision(Systems.DecisionManager.getDecision());
+          }
           setDecisionIsActive(true);
         }}
       />
