@@ -82,7 +82,7 @@ export const getPoliticalLeaningAsString = (politicalLeaning: number): string =>
         }
     }
 
-    throw new Error("politicalLeaning out of range");
+    return "Invalid Political Leaning Value";
 }
 
 export const randomNumber = (min: number, max: number): number => {

@@ -15,7 +15,7 @@ test("Calls onNextTurnClick() prop when the next turn button is clicked", () => 
     />
   );
 
-  const nextTurnButton = screen.getByText(/Next Turn/i);
+  const nextTurnButton = screen.getByText(/Make a Decision/i);
   fireEvent.click(nextTurnButton);
 
   expect(count).toBe(10);

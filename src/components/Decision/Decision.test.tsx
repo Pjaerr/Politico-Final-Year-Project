@@ -16,6 +16,7 @@ test("Calls onYes() prop when the yes button is clicked", () => {
       onYes={() => {
         count += 5;
       }}
+      onClose={() => {}}
     />
   );
 
@@ -37,6 +38,7 @@ test("Calls onNo() prop when the no button is clicked", () => {
         count += 5;
       }}
       onYes={() => {}}
+      onClose={() => {}}
     />
   );
 
