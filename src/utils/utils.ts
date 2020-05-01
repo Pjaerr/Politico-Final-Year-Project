@@ -23,17 +23,19 @@ export const attributesAreBelowZero = ({
     );
 }
 
-export const getPoliticalLeaning = (province: IProvince): PoliticalLeaning => {
-    //Here we would take the province's factors into account and 
-    //feed them into a Fuzzy Inference System that determines the
-    //political leaning. For now it is just chosen randomly for
-    //testing until a relevant FIS is in place.
+export const getPoliticalLeaning = (province: IProvince): Promise<number> => {
+    return new Promise<number>((resolve, reject) => {
+        fetch(`https://localhost:5001/FuzzyLogic?population_density=${province.factors.populationDensity}&non_white_ethnicity_percentage=${province.factors.nonWhiteBritishEthnicPercentage}&number_of_universities=${province.factors.numberOfUniversities}&average_salary=${province.factors.averageSalary}`).then(res => {
+            if (res.status !== 200) {
+                throw new Error(res.statusText);
+            }
 
-    const politicalLeaningAsString = ["Hard Left", "Left", "Centre-Left", "Centre", "Centre-Right",
-        "Right",
-        "Hard-Right"]
-
-    return (politicalLeaningAsString[Math.floor(Math.random() * Math.floor(politicalLeaningAsString.length))]) as PoliticalLeaning;
+            return res.json();
+        }).then(({ fuzzifiedOutput }) => {
+            console.log(fuzzifiedOutput);
+            resolve(fuzzifiedOutput.toFixed(2));
+        }).catch(err => reject(err));
+    });
 }
 
 export const randomNumber = (min: number, max: number): number => {

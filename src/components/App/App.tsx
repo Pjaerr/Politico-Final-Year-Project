@@ -2,6 +2,7 @@ import React from "react";
 
 //Components
 import Game from "../Game/Game";
+import LoadingIcon from "../LoadingIcon/LoadingIcon";
 
 //Interfaces
 import IGameData from "../../interfaces/IGameData";
@@ -32,22 +33,27 @@ class App extends React.Component<Props, GameState> {
       hasExistingSave: gameData ? true : false,
       gameStarted: false,
       gameIsOver: false,
-      playerHasWon: false
+      playerHasWon: false,
     };
 
     //If a save already exists, use it.
     if (gameData) {
       this.state = {
         gameData,
-        ...defaultGameState
+        ...defaultGameState,
       };
     }
     //If not, get fresh game data.
     else {
-      this.state = {
-        gameData: Systems.GameDataManager.getFreshGameData(),
-        ...defaultGameState
-      };
+      Systems.GameDataManager.getFreshGameData()
+        .then((gameData) => {
+          console.log("HEY");
+          this.setState({
+            gameData,
+            ...defaultGameState,
+          });
+        })
+        .catch(console.error);
     }
   }
 
@@ -70,56 +76,66 @@ class App extends React.Component<Props, GameState> {
   endGame = (playerHasWon: boolean) => {
     this.setState({
       gameIsOver: true,
-      playerHasWon
+      playerHasWon,
     });
   };
 
   startNewGame = () => {
-    const gameData: IGameData = Systems.GameDataManager.getFreshGameData();
-
-    Systems.DataStorage.set<IGameData>("GameData", gameData);
-    this.setState({
-      gameData,
-      gameStarted: true
-    });
+    Systems.GameDataManager.getFreshGameData()
+      .then((gameData) => {
+        Systems.DataStorage.set<IGameData>("GameData", gameData);
+        this.setState({
+          gameData,
+          gameStarted: true,
+        });
+      })
+      .catch(console.error);
   };
 
   continueGame = () => {
     this.setState({
-      gameStarted: true
+      gameStarted: true,
     });
   };
 
   restartGame = () => {
-    this.setState({
-      gameData: Systems.GameDataManager.getFreshGameData(),
-      hasExistingSave: false,
-      gameStarted: false,
-      gameIsOver: false,
-      playerHasWon: false
-    });
+    Systems.DataStorage.remove<IGameData>("GameData");
+
+    Systems.GameDataManager.getFreshGameData()
+      .then((gameData) => {
+        this.setState({
+          gameData,
+          hasExistingSave: false,
+          gameStarted: false,
+          gameIsOver: false,
+          playerHasWon: false,
+        });
+      })
+      .catch(console.error);
   };
 
   nextTurn = (consequences: DecisionConsequences) => {
-    this.setState(prevState => {
-      const newGameState = {
-        ...Systems.GameDataManager.updateGameData(
-          prevState.gameData,
-          consequences
-        ),
-        turn: prevState.gameData.turn + 1
-      };
+    Systems.GameDataManager.updateGameData(this.state.gameData, consequences)
+      .then((updatedGameData) => {
+        const newGameState = {
+          ...updatedGameData,
+          turn: this.state.gameData.turn + 1,
+        };
 
-      //Save the game state to storage before we move to the next turn
-      Systems.DataStorage.set<IGameData>("GameData", newGameState);
+        Systems.DataStorage.set<IGameData>("GameData", newGameState);
 
-      return {
-        gameData: newGameState
-      };
-    });
+        this.setState({ gameData: newGameState });
+      })
+      .catch(console.error);
   };
 
   render() {
+    //Because our state could be generated fresh which involves a network request, we first check if state
+    //has actually been assigned before trying to use it.
+    if (!this.state) {
+      return <LoadingIcon />;
+    }
+
     if (!this.state.gameStarted) {
       return (
         <StartScreen
@@ -137,7 +153,7 @@ class App extends React.Component<Props, GameState> {
           playerHasWon={this.state.playerHasWon}
           statistics={{
             numberOfDecisions: this.state.gameData.turn,
-            attributes: this.state.gameData.attributes
+            attributes: this.state.gameData.attributes,
           }}
         />
       );

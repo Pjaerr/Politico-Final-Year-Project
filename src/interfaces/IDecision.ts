@@ -1,11 +1,11 @@
 export enum PoliticalLeaning {
-    HardLeft = "Hard Left",
-    Left = "Left",
-    CentreLeft = "Centre-Left",
-    Centre = "Centre",
-    CentreRight = "Centre-Right",
-    Right = "Right",
-    HardRight = "Hard-Right"
+    HardLeft = 0,
+    Left = 20,
+    CentreLeft = 40,
+    Centre = 50,
+    CentreRight = 60,
+    Right = 80,
+    HardRight = 100
 }
 
 export enum FinancialImpact {

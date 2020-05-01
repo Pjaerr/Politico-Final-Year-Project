@@ -6,8 +6,8 @@ interface IGameDataManager {
     financialImpactMap: Map<FinancialImpact, number>;
     foreignApprovalMap: Map<ForeignApproval, number>;
 
-    getFreshGameData(): IGameData;
-    updateGameData(currentGameData: IGameData, consequences: DecisionConsequences): IGameData;
+    getFreshGameData(): Promise<IGameData>;
+    updateGameData(currentGameData: IGameData, consequences: DecisionConsequences): Promise<IGameData>;
 }
 
 export default IGameDataManager;

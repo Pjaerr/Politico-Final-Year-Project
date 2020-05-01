@@ -15,41 +15,54 @@ import {
 import IAttributes from "../../interfaces/IAttributes";
 import { DecisionConsequences, FinancialImpact, ForeignApproval, PoliticalLeaning } from "../../interfaces/IDecision";
 
-const generateProvinces = (): IProvince[] => {
-    const provinces = [];
+const generateProvinces = (): Promise<IProvince[]> => {
+    return new Promise((resolve, reject) => {
 
-    let partyMembers = 0;
-    const maxPartyMembers = 6;
+        const provinces: IProvince[] = [];
 
-    for (const { name } of Provinces) {
-        let isInParty = false;
+        let partyMembers = 0;
+        const maxPartyMembers = 6;
 
-        //1 in 6 chance that this province is in the party
-        if ((randomNumber(0, 6) === 5) && partyMembers < maxPartyMembers) {
-            partyMembers++;
-            isInParty = true;
+        for (const { name } of Provinces) {
+            let isInParty = false;
+
+            //1 in 6 chance that this province is in the party
+            if ((randomNumber(0, 6) === 5) && partyMembers < maxPartyMembers) {
+                partyMembers++;
+                isInParty = true;
+            }
+
+            let province = {
+                name,
+                population: generateRandomPopulation(),
+                happiness: generateRandomHappiness(),
+                isInParty,
+                politicalLeaning: PoliticalLeaning.Centre,
+                factors: {
+                    populationDensity: generateRandomPopulationDensity(),
+                    numberOfUniversities: generateRandomNumberOfUniversities(),
+                    averageSalary: generateRandomAverageSalary(),
+                    nonWhiteBritishEthnicPercentage: generateRandomNonWhiteBritishEthnicPercentage()
+                }
+            };
+
+            provinces.push(province);
         }
 
-        let province = {
-            name,
-            population: generateRandomPopulation(),
-            happiness: generateRandomHappiness(),
-            isInParty,
-            politicalLeaning: PoliticalLeaning.Centre,
-            factors: {
-                populationDensity: generateRandomPopulationDensity(),
-                numberOfUniversities: generateRandomNumberOfUniversities(),
-                averageSalary: generateRandomAverageSalary(),
-                nonWhiteBritishEthnicPercentage: generateRandomNonWhiteBritishEthnicPercentage()
-            }
-        };
+        let politicalLeaningPromises: Promise<number>[] = [];
 
-        province.politicalLeaning = getPoliticalLeaning(province);
+        provinces.forEach(province => {
+            politicalLeaningPromises.push(getPoliticalLeaning(province));
+        });
 
-        provinces.push(province);
-    }
+        Promise.all(politicalLeaningPromises).then((politicalLeaningPromiseResults) => {
+            politicalLeaningPromiseResults.forEach((politicalLeaning, index) => {
+                provinces[index].politicalLeaning = politicalLeaning;
+            });
 
-    return provinces;
+            resolve(provinces);
+        }).catch(reject);
+    });
 };
 
 const generateAttributes = (): IAttributes => {
@@ -78,77 +91,81 @@ class GameDataManager implements IGameDataManager {
         [ForeignApproval.VeryPositive, 20],
     ]);
 
-    getFreshGameData(): IGameData {
-        return {
-            turn: 0,
-            attributes: generateAttributes(),
-            provinces: generateProvinces()
-        };
+    getFreshGameData(): Promise<IGameData> {
+        return new Promise((resolve, reject) => {
+            generateProvinces().then(provinces => {
+                resolve({
+                    turn: 0,
+                    attributes: generateAttributes(),
+                    provinces
+                });
+            }).catch(reject);
+        })
     };
 
-    updateGameData(currentGameData: IGameData, consequences: DecisionConsequences): IGameData {
-        let updatedGameData = currentGameData;
+    updateGameData(currentGameData: IGameData, consequences: DecisionConsequences): Promise<IGameData> {
+        return new Promise<IGameData>((resolve, reject) => {
 
-        console.log(consequences);
+            let updatedGameData = currentGameData;
 
-        //Work out numeric adjustments to be made
-        let financialImpact = this.financialImpactMap.get(consequences.financialImpact);
-        let foreignApproval = this.foreignApprovalMap.get(consequences.foreignApproval);
+            console.log(consequences);
 
-        if (financialImpact) updatedGameData.attributes.financial += financialImpact;
-        if (foreignApproval) updatedGameData.attributes.foreignPoliticalFavour += foreignApproval;
+            //Work out numeric adjustments to be made
+            let financialImpact = this.financialImpactMap.get(consequences.financialImpact);
+            let foreignApproval = this.foreignApprovalMap.get(consequences.foreignApproval);
 
-        if (updatedGameData.attributes.financial > 100) updatedGameData.attributes.financial = 100;
-        if (updatedGameData.attributes.foreignPoliticalFavour) updatedGameData.attributes.foreignPoliticalFavour = 100;
+            if (financialImpact) updatedGameData.attributes.financial += financialImpact;
+            if (foreignApproval) updatedGameData.attributes.foreignPoliticalFavour += foreignApproval;
+
+            if (updatedGameData.attributes.financial > 100) updatedGameData.attributes.financial = 100;
+            if (updatedGameData.attributes.foreignPoliticalFavour) updatedGameData.attributes.foreignPoliticalFavour = 100;
 
 
-        //! Will need refactoring when have the time. Very non-DRY code.
-        let happiness = currentGameData.attributes.populationHappiness;
-        let domesticPoliticalFavour = currentGameData.attributes.domesticPoliticalFavour;
+            //! Will need refactoring when have the time. Very non-DRY code.
+            let happiness = currentGameData.attributes.populationHappiness;
+            let domesticPoliticalFavour = currentGameData.attributes.domesticPoliticalFavour;
 
-        currentGameData.provinces.forEach(province => {
-            //Every time we call this method (updateGameData), we use the province's factors
-            //to get their political leaning.
-            province.politicalLeaning = getPoliticalLeaning(province);
+            currentGameData.provinces.forEach(province => {
+                const difference = Math.abs(province.politicalLeaning - consequences.politicalLeaning) * 0.01;
 
-            const difference = getDifferenceBetweenPoliticalLeaning(province.politicalLeaning, consequences.politicalLeaning);
+                //Manual hard-coded values
+                let happinessAdjustment = 0;
 
-            if (difference === 0) {
-                happiness += 5;
-            } else if (difference >= 4) {
-                happiness -= 5;
-            }
-
-            if (province.isInParty) {
                 if (difference === 0) {
-                    domesticPoliticalFavour += 5;
+                    happinessAdjustment = 2.5;
                 }
-                else if (difference >= 4) {
-                    domesticPoliticalFavour -= 5;
+                else if (difference > 0 && difference <= 0.15) {
+                    happinessAdjustment = 1
                 }
-            }
+                else if (difference > 0.15 && difference <= 0.25) {
+                    happinessAdjustment = 0.5
+                }
+                else if (difference > 0.25 && difference <= 0.5) {
+                    happinessAdjustment = -0.5
+                }
+                else if (difference > 0.5 && difference <= 0.75) {
+                    happinessAdjustment = -1;
+                }
+                else if (difference === 1) {
+                    happinessAdjustment = -5;
+                }
 
+                happiness += happinessAdjustment;
+
+                if (province.isInParty) {
+                    domesticPoliticalFavour += happinessAdjustment;
+                }
+            });
+
+            if (happiness > 100) happiness = 100;
+            if (domesticPoliticalFavour > 100) domesticPoliticalFavour = 100;
+
+            updatedGameData.attributes.populationHappiness = happiness;
+            updatedGameData.attributes.domesticPoliticalFavour = domesticPoliticalFavour;
+
+            resolve(updatedGameData);
         });
-
-        if (happiness > 100) happiness = 100;
-        if (domesticPoliticalFavour > 100) domesticPoliticalFavour = 100;
-
-        updatedGameData.attributes.populationHappiness = happiness;
-        updatedGameData.attributes.domesticPoliticalFavour = domesticPoliticalFavour;
-
-        return updatedGameData;
     }
 };
-
-const getDifferenceBetweenPoliticalLeaning = (first: PoliticalLeaning, second: PoliticalLeaning): number => {
-    const politicalLeaningAsString = ["Hard Left", "Left", "Centre-Left", "Centre", "Centre-Right",
-        "Right",
-        "Hard-Right"];
-
-    const firstPos = politicalLeaningAsString.indexOf(first);
-    const secondPos = politicalLeaningAsString.indexOf(second);
-
-    return Math.abs(firstPos - secondPos);
-}
 
 export default GameDataManager;
