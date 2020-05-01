@@ -25,17 +25,64 @@ export const attributesAreBelowZero = ({
 
 export const getPoliticalLeaning = (province: IProvince): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
-        fetch(`https://localhost:5001/FuzzyLogic?population_density=${province.factors.populationDensity}&non_white_ethnicity_percentage=${province.factors.nonWhiteBritishEthnicPercentage}&number_of_universities=${province.factors.numberOfUniversities}&average_salary=${province.factors.averageSalary}`).then(res => {
+        fetch(`https://localhost:5001/FuzzyLogic?population_density=${province.factors.populationDensity}&non_white_british_ethnicity_percentage=${province.factors.nonWhiteBritishEthnicPercentage}&number_of_universities=${province.factors.numberOfUniversities}&average_salary=${province.factors.averageSalary}`).then(res => {
             if (res.status !== 200) {
                 throw new Error(res.statusText);
             }
 
             return res.json();
         }).then(({ fuzzifiedOutput }) => {
-            console.log(fuzzifiedOutput);
             resolve(fuzzifiedOutput.toFixed(2));
         }).catch(err => reject(err));
     });
+}
+
+const politicalLeaningMap: { min: number, max: number, politicalLeaning: string }[] = [
+    {
+        min: 0,
+        max: 15,
+        politicalLeaning: "Hard Left"
+    },
+    {
+        min: 16,
+        max: 30,
+        politicalLeaning: "Left"
+    },
+    {
+        min: 31,
+        max: 44,
+        politicalLeaning: "Centre Left"
+    },
+    {
+        min: 45,
+        max: 55,
+        politicalLeaning: "Centre"
+    },
+    {
+        min: 56,
+        max: 70,
+        politicalLeaning: "Centre Right"
+    },
+    {
+        min: 71,
+        max: 85,
+        politicalLeaning: "Right"
+    },
+    {
+        min: 86,
+        max: 100,
+        politicalLeaning: "Hard Right"
+    },
+]
+
+export const getPoliticalLeaningAsString = (politicalLeaning: number): string => {
+    for (const range of politicalLeaningMap) {
+        if (politicalLeaning > range.min && politicalLeaning <= range.max) {
+            return range.politicalLeaning;
+        }
+    }
+
+    throw new Error("politicalLeaning out of range");
 }
 
 export const randomNumber = (min: number, max: number): number => {

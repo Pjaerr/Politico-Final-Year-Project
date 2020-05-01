@@ -47,7 +47,6 @@ class App extends React.Component<Props, GameState> {
     else {
       Systems.GameDataManager.getFreshGameData()
         .then((gameData) => {
-          console.log("HEY");
           this.setState({
             gameData,
             ...defaultGameState,
