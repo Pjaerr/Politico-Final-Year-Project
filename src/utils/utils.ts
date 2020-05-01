@@ -25,18 +25,15 @@ export const attributesAreBelowZero = ({
 
 export const getPoliticalLeaning = (province: IProvince): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
-        fetch(`https://localhost:5001/FuzzyLogic?
-    population_density=${province.factors.populationDensity}&
-    non_white_ethnicity_percentage=${province.factors.nonWhiteBritishEthnicPercentage}&
-    number_of_universities=${province.factors.numberOfUniversities}&
-    average_salary=${province.factors.averageSalary}`).then(res => {
+        fetch(`https://localhost:5001/FuzzyLogic?population_density=${province.factors.populationDensity}&non_white_ethnicity_percentage=${province.factors.nonWhiteBritishEthnicPercentage}&number_of_universities=${province.factors.numberOfUniversities}&average_salary=${province.factors.averageSalary}`).then(res => {
             if (res.status !== 200) {
                 throw new Error(res.statusText);
             }
 
             return res.json();
-        }).then(({ fuzzifiedOutput, defuzzifiedOutput }) => {
-            resolve(fuzzifiedOutput);
+        }).then(({ fuzzifiedOutput }) => {
+            console.log(fuzzifiedOutput);
+            resolve(fuzzifiedOutput.toFixed(2));
         }).catch(err => reject(err));
     });
 }

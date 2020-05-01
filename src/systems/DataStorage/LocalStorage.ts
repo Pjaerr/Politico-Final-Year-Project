@@ -19,6 +19,10 @@ class LocalStorage implements IDataStorage {
   set<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
+
+  remove<T>(key: string): void {
+    localStorage.removeItem(key);
+  }
 }
 
 export default LocalStorage;
