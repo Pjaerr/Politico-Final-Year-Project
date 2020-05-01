@@ -11,12 +11,13 @@ test("Calls onCloseFunc() prop when the close button is clicked", () => {
       averageSalary: 0,
       nonWhiteBritishEthnicPercentage: 0,
       numberOfUniversities: 0,
-      populationDensity: 0
+      populationDensity: 0,
     },
+    politicalLeaning: 50,
     happiness: 100,
     isInParty: false,
     name: "Mock Province",
-    population: 10000
+    population: 10000,
   };
 
   let count = 5;
