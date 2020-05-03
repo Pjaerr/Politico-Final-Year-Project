@@ -80,6 +80,8 @@ class App extends React.Component<Props, GameState> {
   };
 
   startNewGame = () => {
+    Systems.resetSystems();
+
     Systems.GameDataManager.getFreshGameData()
       .then((gameData) => {
         Systems.DataStorage.set<IGameData>("GameData", gameData);

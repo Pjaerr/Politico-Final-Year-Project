@@ -12,6 +12,12 @@ class Systems {
   public static DataStorage: IDataStorage;
   public static DecisionManager: IDecisionManager;
   public static GameDataManager: IGameDataManager;
+
+  public static resetSystems = () => {
+    Systems.DataStorage = new LocalStorage();
+    Systems.DecisionManager = new DecisionManager();
+    Systems.GameDataManager = new GameDataManager();
+  }
 }
 
 Systems.DataStorage = new LocalStorage();
