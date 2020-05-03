@@ -41,3 +41,14 @@
 .continueButton {
   @include button(#fff, rgba(240, 147, 43, 0.8));
 }
+
+.howToPlayButton {
+  border: none;
+  background: none;
+  margin-top: 50px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+
+import HowToPlay from "../HowToPlay/HowToPlay";
 
 import styles from "./StartScreen.module.scss";
 
@@ -11,25 +13,40 @@ type Props = {
 const StartScreen = ({
   showContinueButton,
   continueFunc,
-  startFunc
+  startFunc,
 }: Props) => {
+  const [howToPlayIsActive, setHowToPlayIsActive] = useState(false);
+
   return (
-    <main className={styles.container}>
-      <h1 className={styles.title}>Politico</h1>
-      <div className={styles.buttons}>
-        {showContinueButton && (
-          <button
-            className={styles.continueButton}
-            onClick={() => continueFunc()}
-          >
-            Continue
+    <>
+      {howToPlayIsActive && (
+        <HowToPlay onCloseFunc={() => setHowToPlayIsActive(false)} />
+      )}
+
+      <main className={styles.container}>
+        <h1 className={styles.title}>Politico</h1>
+        <div className={styles.buttons}>
+          {showContinueButton && (
+            <button
+              className={styles.continueButton}
+              onClick={() => continueFunc()}
+            >
+              Continue
+            </button>
+          )}
+          <button className={styles.startButton} onClick={() => startFunc()}>
+            New Game
           </button>
-        )}
-        <button className={styles.startButton} onClick={() => startFunc()}>
-          New Game
+        </div>
+
+        <button
+          className={styles.howToPlayButton}
+          onClick={() => setHowToPlayIsActive(true)}
+        >
+          How to play?
         </button>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 
