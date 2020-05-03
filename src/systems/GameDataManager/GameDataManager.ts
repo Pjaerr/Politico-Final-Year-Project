@@ -120,8 +120,6 @@ class GameDataManager implements IGameDataManager {
             if (updatedGameData.attributes.financial > 100) updatedGameData.attributes.financial = 100;
             if (updatedGameData.attributes.foreignPoliticalFavour) updatedGameData.attributes.foreignPoliticalFavour = 100;
 
-
-            //! Will need refactoring when have the time. Very non-DRY code.
             let happiness = currentGameData.attributes.populationHappiness;
             let domesticPoliticalFavour = currentGameData.attributes.domesticPoliticalFavour;
 
@@ -149,6 +147,13 @@ class GameDataManager implements IGameDataManager {
                 else if (difference === 1) {
                     happinessAdjustment = -5;
                 }
+
+                //If we want to scale by province population
+                //Get the province with the highest population count
+                //Get the province with the lowest population count
+                //Map these counts in a range from 0 to 2
+                //Multiply happinessAdjustment by the result of the range map.
+
 
                 happiness += happinessAdjustment;
 

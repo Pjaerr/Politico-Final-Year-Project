@@ -32,7 +32,15 @@ export const getPoliticalLeaning = (province: IProvince): Promise<number> => {
 
             return res.json();
         }).then(({ fuzzifiedOutput }) => {
-            resolve(fuzzifiedOutput.toFixed(2));
+            if (fuzzifiedOutput) {
+                console.log(fuzzifiedOutput.toFixed(2));
+
+                resolve(fuzzifiedOutput.toFixed(2));
+            }
+            else {
+                resolve(50.00);
+                console.error("Something has gone wrong on the backend");
+            }
         }).catch(err => reject(err));
     });
 }
@@ -44,32 +52,32 @@ const politicalLeaningMap: { min: number, max: number, politicalLeaning: string 
         politicalLeaning: "Hard Left"
     },
     {
-        min: 16,
+        min: 15.01,
         max: 30,
         politicalLeaning: "Left"
     },
     {
-        min: 31,
+        min: 30.01,
         max: 44,
         politicalLeaning: "Centre Left"
     },
     {
-        min: 45,
+        min: 44.01,
         max: 55,
         politicalLeaning: "Centre"
     },
     {
-        min: 56,
+        min: 55.01,
         max: 70,
         politicalLeaning: "Centre Right"
     },
     {
-        min: 71,
+        min: 70.01,
         max: 85,
         politicalLeaning: "Right"
     },
     {
-        min: 86,
+        min: 85.01,
         max: 100,
         politicalLeaning: "Hard Right"
     },
@@ -77,11 +85,12 @@ const politicalLeaningMap: { min: number, max: number, politicalLeaning: string 
 
 export const getPoliticalLeaningAsString = (politicalLeaning: number): string => {
     for (const range of politicalLeaningMap) {
-        if (politicalLeaning > range.min && politicalLeaning <= range.max) {
+        if (politicalLeaning >= range.min && politicalLeaning <= range.max) {
             return range.politicalLeaning;
         }
     }
 
+    console.log(politicalLeaning);
     return "Invalid Political Leaning Value";
 }
 

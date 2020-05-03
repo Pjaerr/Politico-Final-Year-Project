@@ -20,12 +20,12 @@ class DecisionManager implements IDecisionManager {
                     a new arrival to the country can have on the economy before allowing entry.
                 `,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.CentreRight,
+                    politicalLeaning: 65.85,
                     financialImpact: FinancialImpact.Positive,
                     foreignApproval: ForeignApproval.Negative
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Left,
+                    politicalLeaning: 25,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Positive
                 }
@@ -35,12 +35,12 @@ class DecisionManager implements IDecisionManager {
                 description: `Introduce a new High Speed Rail Transport Link at high cost between Greater London and Yorkshire 
                 that will greatly benefit business men/women who travel across the country often.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Right,
+                    politicalLeaning: 75.60,
                     financialImpact: FinancialImpact.VeryNegative,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Centre,
+                    politicalLeaning: 48,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -50,12 +50,12 @@ class DecisionManager implements IDecisionManager {
                 description: `Pass the Energy Regulation Act that ensures all energy companies cannot 
                 charge excessive amounts and must reduce their profit margins.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Left,
+                    politicalLeaning: 20,
                     financialImpact: FinancialImpact.Negative,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Right,
+                    politicalLeaning: 78,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -65,12 +65,12 @@ class DecisionManager implements IDecisionManager {
                 description: `Nationalise the broadband companies so that free broadband can be provided to
                 all households within the UK.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Left,
+                    politicalLeaning: 15.25,
                     financialImpact: FinancialImpact.Negative,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.CentreRight,
+                    politicalLeaning: 56.78,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -80,12 +80,12 @@ class DecisionManager implements IDecisionManager {
                 description: `Place a ban on fox hunting within the UK amidst pressure from the 
                 European Union.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Left,
+                    politicalLeaning: 26.50,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.VeryPositive
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Right,
+                    politicalLeaning: 82,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Negative
                 }
@@ -94,12 +94,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Get Rid of Overseas Financial Aid",
                 description: `Scrap the existing financial aid that the UK provides to countries overseas.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Right,
+                    politicalLeaning: 78.4,
                     financialImpact: FinancialImpact.Positive,
                     foreignApproval: ForeignApproval.VeryNegative
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Left,
+                    politicalLeaning: 26,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -108,12 +108,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Leave the North Atlantic Treaty Organisation (NATO)",
                 description: `Leave NATO and stop contributing 2% of the UK's GDP in funds.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.HardRight,
+                    politicalLeaning: 96,
                     financialImpact: FinancialImpact.Positive,
                     foreignApproval: ForeignApproval.Negative
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.CentreLeft,
+                    politicalLeaning: 40,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -123,12 +123,12 @@ class DecisionManager implements IDecisionManager {
                 description: `Provide more funding for the UK's Armed Forces so that they can
                 carry out their relevant commitments overseas.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.CentreRight,
+                    politicalLeaning: 60,
                     financialImpact: FinancialImpact.Negative,
                     foreignApproval: ForeignApproval.Positive
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.HardLeft,
+                    politicalLeaning: 9.67,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -138,12 +138,12 @@ class DecisionManager implements IDecisionManager {
                 description: `Increase the amount of money spent on renewable energy initiatives, cutting what is
                 spent on fossil fuel producing initiatives.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.CentreLeft,
+                    politicalLeaning: 38.75,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.VeryPositive
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.HardRight,
+                    politicalLeaning: 98.8,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -152,12 +152,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Stop Any Future Plans to Privatise the National Health Service (NHS)",
                 description: `Put laws in place to stop any future potential plans to privatise the NHS.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Centre,
+                    politicalLeaning: 50,
                     financialImpact: FinancialImpact.Negative,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.HardRight,
+                    politicalLeaning: 100,
                     financialImpact: FinancialImpact.Positive,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -166,12 +166,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Reduce Voting Age to 16",
                 description: `Reduce the age at which somebody is legally allowed to vote to 16 years of age.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.Left,
+                    politicalLeaning: 18,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Centre,
+                    politicalLeaning: 50,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -180,12 +180,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Increase the Number of Mandatory Holiday Days Per Year",
                 description: `Increase the number of holiday days that an employer must provide.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.CentreLeft,
+                    politicalLeaning: 35,
                     financialImpact: FinancialImpact.Negative,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Centre,
+                    politicalLeaning: 53.50,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -194,12 +194,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Increase Taxation on UK Businesses",
                 description: `Increase the amount of tax that UK businesses must pay.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.HardLeft,
+                    politicalLeaning: 0,
                     financialImpact: FinancialImpact.Positive,
                     foreignApproval: ForeignApproval.Neutral
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Centre,
+                    politicalLeaning: 55,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
@@ -208,12 +208,12 @@ class DecisionManager implements IDecisionManager {
                 name: "Get Rid of the Nuclear Missles Program in the UK",
                 description: `Scrap the UK's nuclear missles program.`,
                 yes: {
-                    politicalLeaning: PoliticalLeaning.HardLeft,
+                    politicalLeaning: 0,
                     financialImpact: FinancialImpact.Positive,
                     foreignApproval: ForeignApproval.Positive
                 },
                 no: {
-                    politicalLeaning: PoliticalLeaning.Centre,
+                    politicalLeaning: 50,
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
