@@ -13,7 +13,11 @@ import IGameData from "../../interfaces/IGameData";
 
 //Types
 import IProvince from "../../interfaces/IProvince";
-import Systems from "../../systems/Systems";
+import {
+  DataStorageSystem,
+  GameDataManagerSystem,
+  DecisionManagerSystem,
+} from "../../systems/Systems";
 import IAttributes from "../../interfaces/IAttributes";
 import { IDecision, DecisionConsequences } from "../../interfaces/IDecision";
 import { getPoliticalLeaning } from "../../utils/utils";
@@ -52,11 +56,13 @@ const Game = ({ gameData, nextTurn }: Props) => {
             setDecisionIsActive(false);
             nextTurn(activeDecision.yes);
             setActiveDecision(undefined);
+            DecisionManagerSystem.saveDecisionList();
           }}
           onNo={() => {
             setDecisionIsActive(false);
             nextTurn(activeDecision.no);
             setActiveDecision(undefined);
+            DecisionManagerSystem.saveDecisionList();
           }}
           onClose={() => setDecisionIsActive(false)}
         />
@@ -75,7 +81,7 @@ const Game = ({ gameData, nextTurn }: Props) => {
         currentTurn={gameData.turn}
         onNextTurnClick={() => {
           if (activeDecision === undefined) {
-            setActiveDecision(Systems.DecisionManager.getDecision());
+            setActiveDecision(DecisionManagerSystem.getDecision());
           }
           setDecisionIsActive(true);
         }}

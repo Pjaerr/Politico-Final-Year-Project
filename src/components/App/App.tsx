@@ -11,7 +11,12 @@ import IGameData from "../../interfaces/IGameData";
 import GameState from "../../types/GameState";
 
 //Systems
-import Systems from "../../systems/Systems";
+import {
+  DataStorageSystem,
+  GameDataManagerSystem,
+  DecisionManagerSystem,
+  resetSystems,
+} from "../../systems/Systems";
 import EndScreen from "../EndScreen/EndScreen";
 import StartScreen from "../StartScreen/StartScreen";
 
@@ -26,10 +31,10 @@ class App extends React.Component<Props, GameState> {
     super(props);
 
     //Setup State
-    const gameData = Systems.DataStorage.get<IGameData>("GameData");
+    const gameData = DataStorageSystem.get<IGameData>("GameData");
 
     const defaultGameState = {
-      maxTurns: Systems.DecisionManager.numberOfDecisions,
+      maxTurns: DecisionManagerSystem.numberOfDecisions,
       hasExistingSave: gameData ? true : false,
       gameStarted: false,
       gameIsOver: false,
@@ -45,7 +50,7 @@ class App extends React.Component<Props, GameState> {
     }
     //If not, get fresh game data.
     else {
-      Systems.GameDataManager.getFreshGameData()
+      GameDataManagerSystem.getFreshGameData()
         .then((gameData) => {
           this.setState({
             gameData,
@@ -80,11 +85,11 @@ class App extends React.Component<Props, GameState> {
   };
 
   startNewGame = () => {
-    Systems.resetSystems();
+    resetSystems();
 
-    Systems.GameDataManager.getFreshGameData()
+    GameDataManagerSystem.getFreshGameData()
       .then((gameData) => {
-        Systems.DataStorage.set<IGameData>("GameData", gameData);
+        DataStorageSystem.set<IGameData>("GameData", gameData);
         this.setState({
           gameData,
           gameStarted: true,
@@ -100,9 +105,10 @@ class App extends React.Component<Props, GameState> {
   };
 
   restartGame = () => {
-    Systems.DataStorage.remove<IGameData>("GameData");
+    DataStorageSystem.remove<IGameData>("GameData");
+    DataStorageSystem.remove("decisions");
 
-    Systems.GameDataManager.getFreshGameData()
+    GameDataManagerSystem.getFreshGameData()
       .then((gameData) => {
         this.setState({
           gameData,
@@ -116,14 +122,14 @@ class App extends React.Component<Props, GameState> {
   };
 
   nextTurn = (consequences: DecisionConsequences) => {
-    Systems.GameDataManager.updateGameData(this.state.gameData, consequences)
+    GameDataManagerSystem.updateGameData(this.state.gameData, consequences)
       .then((updatedGameData) => {
         const newGameState = {
           ...updatedGameData,
           turn: this.state.gameData.turn + 1,
         };
 
-        Systems.DataStorage.set<IGameData>("GameData", newGameState);
+        DataStorageSystem.set<IGameData>("GameData", newGameState);
 
         this.setState({ gameData: newGameState });
       })

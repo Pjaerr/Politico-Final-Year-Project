@@ -1,10 +1,14 @@
 import IDecisionManager from "./IDecisionManager";
 import { IDecision, PoliticalLeaning, FinancialImpact, ForeignApproval } from "../../interfaces/IDecision";
 import { randomNumber } from "../../utils/utils";
+import {
+    DataStorageSystem
+} from "../Systems";
 
 class DecisionManager implements IDecisionManager {
     numberOfDecisions: number;
     decisions: IDecision[];
+    decisionList: IDecision[];
 
     /**
      * Note for testing:
@@ -217,18 +221,131 @@ class DecisionManager implements IDecisionManager {
                     financialImpact: FinancialImpact.Neutral,
                     foreignApproval: ForeignApproval.Neutral
                 }
+            },
+            {
+                name: "Increase the Living Wage to £15.34 an hour",
+                description: `Increase the Living Wage from £10.75 an hour to £15.34 an hour`,
+                yes: {
+                    politicalLeaning: 16,
+                    financialImpact: FinancialImpact.Negative,
+                    foreignApproval: ForeignApproval.Neutral
+                },
+                no: {
+                    politicalLeaning: 78,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.Neutral
+                }
+            },
+            {
+                name: "Restrict older cars from entering central zones in larger cities",
+                description: `To help reduce emissions, fine those driving cars inside of central zones in larger cities whose production date is older than 2005.`,
+                yes: {
+                    politicalLeaning: 21,
+                    financialImpact: FinancialImpact.Positive,
+                    foreignApproval: ForeignApproval.Positive
+                },
+                no: {
+                    politicalLeaning: 58,
+                    financialImpact: FinancialImpact.Negative,
+                    foreignApproval: ForeignApproval.Negative
+                }
+            },
+            {
+                name: "Shut down the majority of the fishing industry",
+                description: `Shut down the British fishing industry, in favour of importing from Iceland.`,
+                yes: {
+                    politicalLeaning: 30,
+                    financialImpact: FinancialImpact.VeryNegative,
+                    foreignApproval: ForeignApproval.VeryPositive
+                },
+                no: {
+                    politicalLeaning: 62,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.Negative
+                }
+            },
+            {
+                name: "Limit entry into the country to only 'High-Skilled' workers",
+                description: `Only allow high skilled workers into the country.`,
+                yes: {
+                    politicalLeaning: 100,
+                    financialImpact: FinancialImpact.Positive,
+                    foreignApproval: ForeignApproval.VeryNegative
+                },
+                no: {
+                    politicalLeaning: 45,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.Positive
+                }
+            },
+            {
+                name: "Allow counties like Yorkshire to implement a mayoral system like London",
+                description: `Allow large counties like Yorkshire to implement a mayoral system like in London. This will give those counties more power locally.`,
+                yes: {
+                    politicalLeaning: 35,
+                    financialImpact: FinancialImpact.Positive,
+                    foreignApproval: ForeignApproval.Neutral
+                },
+                no: {
+                    politicalLeaning: 80,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.Neutral
+                }
+            },
+            {
+                name: "Implement a Sugar Tax",
+                description: `Items that have over a set amount of sugar will now cost more in the supermarkets.`,
+                yes: {
+                    politicalLeaning: 40,
+                    financialImpact: FinancialImpact.VeryPositive,
+                    foreignApproval: ForeignApproval.Positive
+                },
+                no: {
+                    politicalLeaning: 55,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.Neutral
+                }
+            },
+            {
+                name: "Switch to using the Euro",
+                description: `Switch from using GBP to EUR as the national currency of Great Britain.`,
+                yes: {
+                    politicalLeaning: 0,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.VeryPositive
+                },
+                no: {
+                    politicalLeaning: 50,
+                    financialImpact: FinancialImpact.Neutral,
+                    foreignApproval: ForeignApproval.Negative
+                }
             }
         ];
 
-        this.numberOfDecisions = this.decisions.length - 1;
+        const decisionsFromStorage = DataStorageSystem.get<IDecision[]>("decisions");
+
+        if (decisionsFromStorage) {
+            this.decisionList = decisionsFromStorage;
+        }
+        else {
+            this.decisionList = this.decisions.sort(() => Math.random() - 0.5);
+        }
+
+        this.numberOfDecisions = this.decisionList.length - 1;
     }
 
     getDecision(): IDecision {
-        const decision = this.decisions[randomNumber(0, this.decisions.length - 1)];
+        const decision = this.decisionList.pop();
 
-        this.decisions = this.decisions.filter(dec => dec !== decision);
+        if (decision) {
+            return decision;
+        }
 
-        return decision;
+        throw new Error("List of decisions is empty!");
+    }
+
+    saveDecisionList(): void {
+        DataStorageSystem.set<IDecision[]>("decisions", this.decisionList);
     }
 }
 

@@ -10,7 +10,8 @@ import {
     generateRandomAverageSalary,
     generateRandomNonWhiteBritishEthnicPercentage,
     randomNumber,
-    getPoliticalLeaning
+    getPoliticalLeaning,
+    getPoliticalLeaningAsString
 } from "../../utils/utils";
 import IAttributes from "../../interfaces/IAttributes";
 import { DecisionConsequences, FinancialImpact, ForeignApproval, PoliticalLeaning } from "../../interfaces/IDecision";
@@ -67,25 +68,25 @@ const generateProvinces = (): Promise<IProvince[]> => {
 
 const generateAttributes = (): IAttributes => {
     return {
-        financial: 80,
+        financial: 70,
         populationHappiness: 30,
         domesticPoliticalFavour: 50,
-        foreignPoliticalFavour: 100
+        foreignPoliticalFavour: 80
     };
 };
 
 class GameDataManager implements IGameDataManager {
     financialImpactMap = new Map<FinancialImpact, number>([
-        [FinancialImpact.VeryNegative, -20],
-        [FinancialImpact.Negative, -10],
+        [FinancialImpact.VeryNegative, -40],
+        [FinancialImpact.Negative, -20],
         [FinancialImpact.Neutral, 0],
         [FinancialImpact.Positive, 10],
         [FinancialImpact.VeryPositive, 20],
     ]);
 
     foreignApprovalMap = new Map<ForeignApproval, number>([
-        [ForeignApproval.VeryNegative, -20],
-        [ForeignApproval.Negative, -10],
+        [ForeignApproval.VeryNegative, -40],
+        [ForeignApproval.Negative, -20],
         [ForeignApproval.Neutral, 0],
         [ForeignApproval.Positive, 10],
         [ForeignApproval.VeryPositive, 20],

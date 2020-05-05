@@ -8,20 +8,30 @@ import LocalStorage from "./DataStorage/LocalStorage";
 import DecisionManager from "./DecisionManager/DecisionManager";
 import GameDataManager from "./GameDataManager/GameDataManager";
 
-class Systems {
-  public static DataStorage: IDataStorage;
-  public static DecisionManager: IDecisionManager;
-  public static GameDataManager: IGameDataManager;
+export let DataStorageSystem = new LocalStorage();
+export let DecisionManagerSystem = new DecisionManager();
+export let GameDataManagerSystem = new GameDataManager();
 
-  public static resetSystems = () => {
-    Systems.DataStorage = new LocalStorage();
-    Systems.DecisionManager = new DecisionManager();
-    Systems.GameDataManager = new GameDataManager();
-  }
+export const resetSystems = () => {
+  DataStorageSystem = new LocalStorage();
+  DecisionManagerSystem = new DecisionManager();
+  GameDataManagerSystem = new GameDataManager();
 }
 
-Systems.DataStorage = new LocalStorage();
-Systems.DecisionManager = new DecisionManager();
-Systems.GameDataManager = new GameDataManager();
+// class Systems {
+//   public static DataStorage: IDataStorage = new LocalStorage();
+//   public static DecisionManager: IDecisionManager = new DecisionManager();
+//   public static GameDataManager: IGameDataManager = new GameDataManager();
 
-export default Systems;
+//   public static resetSystems = () => {
+//     Systems.DataStorage = new LocalStorage();
+//     Systems.DecisionManager = new DecisionManager();
+//     Systems.GameDataManager = new GameDataManager();
+//   }
+// }
+
+// Systems.DataStorage = new LocalStorage();
+// Systems.DecisionManager = new DecisionManager();
+// Systems.GameDataManager = new GameDataManager();
+
+// export default Systems;
