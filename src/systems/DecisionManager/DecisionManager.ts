@@ -322,6 +322,7 @@ class DecisionManager implements IDecisionManager {
             }
         ];
 
+
         const decisionsFromStorage = DataStorageSystem.get<IDecision[]>("decisions");
 
         if (decisionsFromStorage) {
@@ -332,6 +333,7 @@ class DecisionManager implements IDecisionManager {
         }
 
         this.numberOfDecisions = this.decisionList.length - 1;
+
     }
 
     getDecision(): IDecision {

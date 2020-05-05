@@ -2,11 +2,34 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import Decision from "./Decision";
+import IDecisionManager from "../../systems/DecisionManager/IDecisionManager";
 import DecisionManager from "../../systems/DecisionManager/DecisionManager";
+import { FinancialImpact, ForeignApproval } from "../../interfaces/IDecision";
+
+const mockDecisionManager: IDecisionManager = {
+  decisionList: [],
+  decisions: [],
+  getDecision: () => {
+    return {
+      description: "",
+      name: "",
+      yes: {
+        financialImpact: FinancialImpact.Neutral,
+        foreignApproval: ForeignApproval.Neutral,
+        politicalLeaning: 0,
+      },
+      no: {
+        financialImpact: FinancialImpact.Neutral,
+        foreignApproval: ForeignApproval.Neutral,
+        politicalLeaning: 0,
+      },
+    };
+  },
+  numberOfDecisions: 10,
+  saveDecisionList: () => {},
+};
 
 test("Calls onYes() prop when the yes button is clicked", () => {
-  const mockDecisionManager = new DecisionManager();
-
   let count = 5;
 
   render(
@@ -27,8 +50,6 @@ test("Calls onYes() prop when the yes button is clicked", () => {
 });
 
 test("Calls onNo() prop when the no button is clicked", () => {
-  const mockDecisionManager = new DecisionManager();
-
   let count = 5;
 
   render(
