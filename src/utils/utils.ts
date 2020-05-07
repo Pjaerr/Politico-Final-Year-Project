@@ -254,3 +254,4 @@ export const generateRandomNonWhiteBritishEthnicPercentage = (): number => {
 
     return randomNumber(0, 100);
 }
+
